@@ -1,0 +1,44 @@
+{
+  "name": "jc-color",
+  "version": "1.0.0",
+  "description": "A JavaScript tool for color compute and console print tool both for NodeJS and Browser.",
+  "scripts": {
+    "dev": "gulp --require @esbuild-kit/cjs-loader"
+  },
+  "homepage": "https://github.com/jacklee1995/jc-color",
+  "keywords": [
+    "color",
+    "console",
+    "log",
+    "font",
+    "debug",
+    "loger"
+  ],
+  "author": {
+    "name": "jcLee1995",
+    "email": "291148484@163.com",
+    "url": "https://github.com/jacklee1995"
+  },
+  "license": "Apache2.0",
+  "dependencies": {
+    "hookable": "^5.4.2"
+  },
+  "devDependencies": {
+    "@esbuild-kit/cjs-loader": "^2.4.2",
+    "@types/gulp": "^4.0.10",
+    "@types/gulp-concat": "^0.0.33",
+    "@types/gulp-rename": "^2.0.1",
+    "@types/gulp-uglify": "^3.0.7",
+    "@types/node": "^18.11.18",
+    "del": "^7.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-typescript": "6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "typescript": "^4.9.4"
+  },
+  "engines": {
+    "node": ">= 16"
+  }
+}
