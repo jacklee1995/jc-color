@@ -34,42 +34,40 @@ pnpm install jc-color
 
 日常中人眼看到物体的不同颜色来源于物体对光的选择性吸收，当一个物体不吸收某个波长的光波时，这段光波将被物体反色，从而进入人的眼中。 生活中的不发光物体靠反射自己不吸收的光让我们感知颜色，对于显示器设备这类发光物体却恰恰相反，他们靠发出特定波长的光让我们感知颜色。光学中的任何颜色都是由三种最基本的颜色叠加形成的，这三种颜色称为所谓光的 **三原色**，由光的三原色相互叠加就可以得到各种颜色，包括白色。这三原色就包括 **红**（Red）、**绿**（Green）、**蓝**（Blue）。
 
-
 ## 3. 颜色的表示
 
 ### 3.1 通过 RGB 表示的颜色
 
-
 ### 3.2 通过十六进制数表示的颜色
-
 
 ## 4. 颜色的处理
 
-
 ## 5. 在控制台使用彩色文字
-
 
 ### 5.1 ColorUnit 对象
 
 `ColorUnit` 对象是构成控制台彩色文本的组成颗粒，你可以通过给出前景色和背景色RGB值对象创建一个彩色文本单元。
 
 ```ts
-import { ColorUnit } from '../jc-color/dist/jc-color'
+import { TextUnit } from 'jc-color'
 
 const text = "我是一段蓝底红字的文本";        // 要在控制台打印的文本
 const foreColor = {red:255,green:0,blue:0}; // 文本颜色
 const bgColor = {red:0,green:255,blue:0};   // 背景色
 
-const unit = new ColorUnit(text, foreColor, bgColor)
+const unit = new TextUnit(text, foreColor, bgColor)
 unit.print();
+
+
 ```
 
 这段代码 NodeJS 环境的终端中效果看起来是这样子的：
 
-![1677849104561](image/readmeCN/1677849104561.png)
+![1677849104561](image/readme_CN/1677849104561.png)
 
-同样的代码还可以完美地被应用于浏览器地控制台，效果是这样的：
+完全一样的代码还可以完美地被应用于浏览器地控制台，效果是这样的：
 
+![1677943703060](image/readme_CN/1677943703060.png)
 
 ---
 
@@ -77,7 +75,9 @@ unit.print();
 
 为了方便使用，`jc-color` 已经预先定义好了一些常见的颜色名。这些颜色名与CSS标准中定义的颜色总体一致。各颜色名与对应的值如下：
 
-| 颜色名 | 十六进制颜色值 | 颜色展示 |  | 颜色名 | 十六进制颜色值 | 颜色展示 
+
+
+| 颜色名 | 十六进制颜色值 | 颜色展示 |  | 颜色名 | 十六进制颜色值 | 颜色展示 |
 | :-  | :- | :- | :-  | :- | :- | :- |
 | black | #000000 | <table><td bgcolor="#000000">#000000</td></table> || navy | #000080 | <table><td bgcolor="#000080">#000080</td></table> |
 | darkblue | #00008B | <table><td bgcolor="#00008B">#00008B</td></table> || mediumblue | #0000CD | <table><td bgcolor="#0000CD">#0000CD</td></table> |

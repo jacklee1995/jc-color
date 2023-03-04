@@ -71,7 +71,6 @@ class TextUnit {
     if(getPlatform()==="Node"){
       console.log(this.__str__);
     }else{
-      console.log(this.css)
       console.log(this.__str__, this.css)
     }
     

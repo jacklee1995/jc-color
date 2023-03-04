@@ -1,17 +1,14 @@
 # jc-color
 
-
 [中文](readme_CN.md) | English
 
 **Author**: Jack Lee (李俊才)
 
 **Author Email**: [291148484@163.com](mailto:291148484@163.com)
 
-
 **github**: https://github.com/jacklee1995/jc-color
 
 A color tool, which can be used for **color type conversion**, **color matching** and **console output**. It can be used not only in **browsers**, but also in **NodeJS**.
-
 
 ## 1. Install
 
@@ -33,54 +30,49 @@ yarn add jc-color
 pnpm install jc-color
 ```
 
-
 ## 2. Some concepts of color
-In daily life, human eyes see that the different colors of an object come from the selective absorption of light by the object. When an object does not absorb a certain wavelength of light, this light wave will be reversed by the object and enter people's eyes. Non-luminous objects in life let us perceive color by reflecting light that we don't absorb, but for luminous objects such as display devices, on the contrary, they let us perceive color by emitting light with a specific wavelength. Any color in optics is formed by the superposition of three basic colors, which are called the * * three primary colors of light. Various colors, including white, can be obtained by the superposition of the three primary colors of light. These three primary colors include ** red **Red**, **Green** and **Blue**.
 
+In daily life, human eyes see that the different colors of an object come from the selective absorption of light by the object. When an object does not absorb a certain wavelength of light, this light wave will be reversed by the object and enter people's eyes. Non-luminous objects in life let us perceive color by reflecting light that we don't absorb, but for luminous objects such as display devices, on the contrary, they let us perceive color by emitting light with a specific wavelength. Any color in optics is formed by the superposition of three basic colors, which are called the * * three primary colors of light. Various colors, including white, can be obtained by the superposition of the three primary colors of light. These three primary colors include ** red **Red**, **Green** and **Blue**.
 
 ## 3. Representation method of color
 
 ### 3.1 Use RGB to represent colors
 
-
 ### 3.2 Use hexadecimal number to represent colors
-
 
 ## 4. handle of color
 
-
 ## 5. Use colored text on the console.
-
 
 ### 5.1 Object ColorUnit
 
 Object `ColorUnit` is the constituent particle of the console color text. You can create a color text unit by giving RGB value objects of foreground color and background color.
 
 ```ts
-import { ColorUnit } from '../jc-color/dist/jc-color'
+import { TextUnit } from 'jc-color'
 
 const text = "I am a red text on a blue background."; // Text to be printed on the console.
 const foreColor = {red:255,green:0,blue:0};           // Text color
 const bgColor = {red:0,green:255,blue:0};             // Background color
 
-const unit = new ColorUnit(text, foreColor, bgColor)
+const unit = new TextUnit(text, foreColor, bgColor)
 unit.print();
 ```
 
 这段代码 NodeJS 环境的终端中的运行效果看起来是这样子的：
 
-![1677849842915](/image/readme/1677849842915.png)
+![1677849842915](image/readme/1677849842915.png)
 
 The same code can also be perfectly applied to the console of the browser, and the effect looks like this:
+
+![1677943967158](image/readme/1677943967158.png)
 
 
 ---
 
 # Appendix. Internally defined color names
 
-
 For the convenience of use, `jc-color` has predefined some common color names. These color names are generally consistent with the colors defined in CSS standards. The color names and corresponding values are as follows:
-
 
 | color names | hex color value | Effect preview |  | color names | hex color value | Effect preview |
 | :-  | :- | :- | :-  | :- | :- | :- |
