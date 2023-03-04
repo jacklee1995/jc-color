@@ -1,13 +1,16 @@
-machine
-
 # jc-color
 
 
-[中文](readme_CN.md  "点击跳转中文文档") | English
+[中文](readme_CN.md) | English
 
-A color tool, which can be used for **color type conversion**, **color matching** and **console output**. It can be used not only in **browsers**, but also in **NodeJS**.
+**Author**: Jack Lee (李俊才)
+
+**Author Email**: [291148484@163.com](mailto:291148484@163.com)
+
 
 **github**: https://github.com/jacklee1995/jc-color
+
+A color tool, which can be used for **color type conversion**, **color matching** and **console output**. It can be used not only in **browsers**, but also in **NodeJS**.
 
 
 ## 1. Install
@@ -66,7 +69,7 @@ unit.print();
 
 这段代码 NodeJS 环境的终端中的运行效果看起来是这样子的：
 
-![1677849842915](image/readme/1677849842915.png)
+![1677849842915](/image/readme/1677849842915.png)
 
 The same code can also be perfectly applied to the console of the browser, and the effect looks like this:
 

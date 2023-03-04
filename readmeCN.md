@@ -1,12 +1,14 @@
-machine
-
 # jc-color
 
 中文 | [English](/readme.md "Click to jump to English document.")
 
-一个 JavaScript/NodeJS 颜色用具，可以用于 **颜色类型转换**、**调色**、**控制台输出**。它不仅可以用于**浏览器**，还可以用于  **NodeJS**。
+**作者**: Jack Lee (李俊才)
+
+**作者邮箱**: [291148484@163.com](mailto:291148484@163.com)
 
 **github**: https://github.com/jacklee1995/jc-color
+
+一个 JavaScript/NodeJS 颜色用具，可以用于 **颜色类型转换**、**调色**、**控制台输出**。它不仅可以用于**浏览器**，还可以用于  **NodeJS**。
 
 ## 1.安装
 
