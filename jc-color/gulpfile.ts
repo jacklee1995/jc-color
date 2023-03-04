@@ -10,7 +10,10 @@ import consola from "consola"
 
 const baseDir = __dirname;
 consola.info(`[build info] baseDir is:\n${baseDir}`)
-const outDir = path.resolve(baseDir,'dist','src');
+
+const rootDir = path.resolve(__dirname, '..')
+consola.info(`[build info] rootDir is:\n${rootDir}`)
+
 const productDir = path.resolve(baseDir,'dist','jc-color');
 consola.info(`[build info] productDir is:\n${productDir}`)
 
@@ -68,11 +71,11 @@ export const  copyFiles = async () => {
       path.join(productDir, 'package.json')
     ),
     copyFile(
-      path.resolve(__dirname, 'README.md'),
+      path.resolve(rootDir, 'README.md'),
       path.resolve(productDir, 'README.md')
     ),
     copyFile(
-      path.resolve(__dirname, 'LICENSE'),
+      path.resolve(rootDir, 'LICENSE'),
       path.resolve(productDir, 'LICENSE')
     ),
     // copyFile(

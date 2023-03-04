@@ -1,4 +1,8 @@
-import type { ColorsDict } from "./types"
+import { regHex } from "./regs";
+import type { Color, ColorChannels, ColorInfo, ColorsDict } from "./types";
+import { isObject, isString } from "./utils";
+
+import { computHex3, computHex6, rgbToChannels, hexToChannels, hexToRgb } from "./converter";
 
 const colorsDict: ColorsDict = {
   black: {
@@ -73,7 +77,7 @@ const colorsDict: ColorsDict = {
     green: 250,
     blue: 154,
   },
-  lime:{
+  lime: {
     hex: "#00FF00",
     red: 0,
     green: 255,
@@ -578,7 +582,7 @@ const colorsDict: ColorsDict = {
     blue: 63,
   },
   thistle: {
-    hex:"#D8BFD8",
+    hex: "#D8BFD8",
     red: 216,
     green: 191,
     blue: 216,
@@ -840,9 +844,144 @@ const colorsDict: ColorsDict = {
     red: 255,
     green: 255,
     blue: 255,
+  },
+};
+
+class Channels {
+  private _red: number = 0;
+  private _green: number = 0;
+  private _blue: number = 0;
+
+  constructor(color?: ColorChannels) {}
+  get value() {
+    return {
+      red: this._red,
+      green: this._green,
+      blue: this._blue,
+    };
+  }
+  set value(value: ColorChannels) {
+    this._red = value.red;
+    this._green = value.green;
+    this._blue = value.blue;
+  }
+  get red() {
+    return this._red;
+  }
+  get green() {
+    return this._green;
+  }
+  get blue() {
+    return this._blue;
+  }
+  set red(value:number) {
+    this._red = value;
+  }
+  set green(value:number) {
+    this._green = value;
+  }
+  set blue(value:number) {
+    this._blue = value;
+  }
+  add(by: number): void {
+    this._red += by;
+    this._green += by;
+    this._blue += by;
+  }
+  minus(by: number): void {
+    this._red -= by;
+    this._green -= by;
+    this._blue -= by;
+  }
+  addReb(by: number=1): void {
+    this._red += by;
+  }
+  addGreen(by: number=1): void {
+    this._green += by;
+  }
+  addBlue(by: number=1): void {
+    this._blue += by;
+  }
+  minusRed(by: number=1): void {
+    this._red -= by;
+  }
+  minusGreen(by: number=1): void {
+    this._red -= by;
+  }
+  minusBlue(by: number=1): void {
+    this._red -= by;
+  }
+  toHex3(): string{
+    return computHex3(this.value)
+  }
+  toHex(): string{
+    return computHex6(this.value)
+  }
+  /**Alias for toHex */
+  toHex6(): string{
+    return this.toHex()
+  }
+  toCSSRGB(){
+    return `rgb(${this._red},${this._green},${this._blue})`
+  }
+  /**加载一个十六进制颜色字符串 */
+  loadHex(val:string): void {
+    this.value = hexToChannels(val)
+  }
+  /**
+   * 加载一个rgb表示的颜色字符串
+   * @param val 格式为 `rgb(red,green,blue)`
+   */
+  loadRgb(val:string): void {
+    this.value = rgbToChannels(val)
+  }
+}
+class ColorBase {
+  private _red: number = 0;
+  private _green: number = 0;
+  private _blue: number = 0;
+
+  constructor(color: ColorChannels) {}
+
+  get value() {
+    return {
+      red: this._red,
+      green: this._green,
+      blue: this._blue,
+    };
   }
 }
 
-export {
-  colorsDict
+class RgbColor {
+  constructor(val: string | ColorChannels) {}
 }
+
+class HexColor extends ColorBase {
+  constructor(val: string | ColorChannels) {
+    let channers = { red: 0, green: 0, blue: 0 };
+    if (isString(val)) {
+      let _ = (colorsDict as Record<string, ColorInfo | undefined>)[val];
+      // 采用 #开头的三位或者六位十六进制数
+      if (regHex.test(val)) {
+        channers = hexToChannels(val);
+      }
+      // 预定义颜色名
+      else if (_) {
+        [channers.red, channers.green, channers.blue] = [
+          _.red,
+          _.green,
+          _.blue,
+        ];
+      }
+    } else if (isObject(val)) {
+      if (val.red) {
+        channers.red = val.red;
+        channers.green = val.green;
+        channers.blue = val.blue;
+      }
+    }
+    super(channers);
+  }
+}
+
+export { Channels, ColorBase, colorsDict };

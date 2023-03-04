@@ -20,16 +20,13 @@
     "url": "https://github.com/jacklee1995"
   },
   "license": "Apache2.0",
-  "dependencies": {
-    "hookable": "^5.4.2"
-  },
   "devDependencies": {
     "@esbuild-kit/cjs-loader": "^2.4.2",
     "@types/gulp": "^4.0.10",
     "@types/gulp-concat": "^0.0.33",
     "@types/gulp-rename": "^2.0.1",
     "@types/gulp-uglify": "^3.0.7",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.14.1",
     "del": "^7.0.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",

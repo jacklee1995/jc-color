@@ -1,6 +1,7 @@
+import { ColorTypeCode } from "./enums";
 
 declare type ColorInfo = { hex: string; red: number; green: number; blue: number }
-declare type Color = Omit<ColorInfo, 'hex'>
+
 declare type ColorNames = 
  | "black"
  | "navy"
@@ -142,6 +143,10 @@ declare type ColorNames =
  | "lightyellow"
  | "ivory"
  | "white"
+ 
+declare type ColorChannels = Omit<ColorInfo, 'hex'>
+
+declare type Color = ColorNames | ColorChannels
 
 declare type ColorsDict = Record<ColorNames, ColorInfo>
 /**
@@ -154,10 +159,6 @@ declare type ColorsDict = Record<ColorNames, ColorInfo>
  */
 declare type DisplatMode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8; 
 
-enum ColorTypeCode {
-  frColor = 38,
-  bgClolr = 48,
-}
 
 declare type RGBColor = {
   red: number;
@@ -167,4 +168,4 @@ declare type RGBColor = {
   typecode: ColorTypeCode;
 };
 
-export { ColorInfo, Color, ColorNames, ColorsDict, DisplatMode, ColorTypeCode, RGBColor };
+export { ColorInfo, ColorNames, ColorChannels, Color, ColorsDict, DisplatMode, ColorTypeCode, RGBColor };

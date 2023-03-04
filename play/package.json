@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "cls": "powershell -Command \"cls\"",
-    "excute": "ts-node index.ts",
-    "dev": "nodemon -e ts --watch index.ts --exec  \"pnpm run cls && pnpm run excute\""
+    "excute": "ts-node node/index.ts",
+    "play:node": "nodemon --watch browser --exec  \"pnpm run cls && pnpm run excute\"",
+    "play:browser": "vite --host"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "consola": "^2.15.3",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "jc-color": "workspace:*"
   }
 }
