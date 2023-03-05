@@ -30,7 +30,12 @@ function getPlatform():Platform {
 
 const templates = (that:TextUnit) => {
   return {
-    "Node": `\x1B[1;${ColorTypeCode.bgClolr};${that.bgMode};${that.bgColor.red};${that.bgColor.green};${that.bgColor.blue};1;${ColorTypeCode.frColor};${that.foreMode};${that.foreColor.red};${that.foreColor.green};${that.foreColor.blue}m${that.text}\x1B[0m`,
+    "Node": {
+      "styless": `\x1B[0m${that.text}`,
+      "fore": `\x1B[1;${ColorTypeCode.bgClolr};${that.bgMode};${that.bgColor.red};${that.bgColor.green};${that.bgColor.blue}m${that.text}\x1B[0m`,
+      "back": `\x1B[1;${ColorTypeCode.frColor};${that.foreMode};${that.foreColor.red};${that.foreColor.green};${that.foreColor.blue}m${that.text}\x1B[0m`,
+      "fore_back": `\x1B[1;${ColorTypeCode.bgClolr};${that.bgMode};${that.bgColor.red};${that.bgColor.green};${that.bgColor.blue};1;${ColorTypeCode.frColor};${that.foreMode};${that.foreColor.red};${that.foreColor.green};${that.foreColor.blue}m${that.text}\x1B[0m`,
+    },
     "Browser": `%c${that.text}`
   }
 }

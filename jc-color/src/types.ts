@@ -1,3 +1,4 @@
+import { TextUnit } from "./console";
 import { ColorTypeCode } from "./enums";
 
 declare type ColorInfo = { hex: string; red: number; green: number; blue: number }
@@ -168,4 +169,6 @@ declare type RGBColor = {
   typecode: ColorTypeCode;
 };
 
-export { ColorInfo, ColorNames, ColorChannels, Color, ColorsDict, DisplatMode, ColorTypeCode, RGBColor };
+declare type ColorTextUnit = ({text: string, bgColor?: ColorChannels|string, foreColor?: ColorChannels|string} | TextUnit)
+
+export { ColorInfo, ColorNames, ColorChannels, Color, ColorsDict, DisplatMode, ColorTypeCode, RGBColor, ColorTextUnit };

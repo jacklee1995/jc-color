@@ -29,6 +29,7 @@ const int = (item: string|number|boolean|undefined|null) => {
   }else if (isString(item)){
     return parseInt(item);
   }
+  return false
 }
 
 function exceptStringToRun(input: any, func:(...args: any) => any, ...args: any[]) {

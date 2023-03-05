@@ -847,6 +847,8 @@ const colorsDict: ColorsDict = {
   },
 };
 
+const colorNames = Object.keys(colorsDict);
+
 class Channels {
   private _red: number = 0;
   private _green: number = 0;
@@ -952,36 +954,5 @@ class ColorBase {
   }
 }
 
-class RgbColor {
-  constructor(val: string | ColorChannels) {}
-}
 
-class HexColor extends ColorBase {
-  constructor(val: string | ColorChannels) {
-    let channers = { red: 0, green: 0, blue: 0 };
-    if (isString(val)) {
-      let _ = (colorsDict as Record<string, ColorInfo | undefined>)[val];
-      // 采用 #开头的三位或者六位十六进制数
-      if (regHex.test(val)) {
-        channers = hexToChannels(val);
-      }
-      // 预定义颜色名
-      else if (_) {
-        [channers.red, channers.green, channers.blue] = [
-          _.red,
-          _.green,
-          _.blue,
-        ];
-      }
-    } else if (isObject(val)) {
-      if (val.red) {
-        channers.red = val.red;
-        channers.green = val.green;
-        channers.blue = val.blue;
-      }
-    }
-    super(channers);
-  }
-}
-
-export { Channels, ColorBase, colorsDict };
+export { Channels, ColorBase, colorsDict, colorNames };

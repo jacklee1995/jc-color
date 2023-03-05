@@ -5,7 +5,7 @@
   "scripts": {
     "cls": "powershell -Command \"cls\"",
     "excute": "ts-node node/index.ts",
-    "play:node": "nodemon --watch browser --exec  \"pnpm run cls && pnpm run excute\"",
+    "play:node": "nodemon -e ts --watch node --exec  \"pnpm run cls && pnpm run excute\"",
     "play:browser": "vite --host"
   },
   "keywords": [],
