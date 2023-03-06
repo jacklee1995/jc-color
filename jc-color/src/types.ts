@@ -1,6 +1,43 @@
 import { TextUnit } from "./console";
 import { ColorTypeCode } from "./enums";
 
+declare type DisplatMode = 
+  // | 'remove_all'       // 清除所有样式
+  // | 'remove_bold'      // 取消粗体
+  // | 'remove_underline' // 取消下划线
+  // | 'remove_glimmer'   // 取消闪烁
+  // | 'remove_reverse'   // 取消反向
+  // | 'remove_hidden'    // 取消隐藏
+  // | 'remove_delete'    // 取消删除
+  // | 'remove_overline'  // 取消上划线
+  | 'bold'             // 亮白色，粗体
+  | 'dark'             // 暗色
+  | 'italic'           // 斜体
+  | 'underline'        // 下划线
+  | 'glimmer'          // 闪烁
+  | 'reverse'          // 反向
+  | 'hidden'           // 隐藏
+  | 'delete'           // 删除
+  | 'underline_double' // 双下划线
+//  | 'black'            // 黑色
+//  | 'red'              // 红色
+//  | 'green'            // 绿色
+//  | 'yellow'           // 黄色
+//  | 'blue'             // 蓝色
+//  | 'magenta'          // 品红
+//  | 'cyan'             // 青色
+//  | 'white'            // 白色
+//  | 'blackBG'          // 背景色为黑色
+//  | 'redBG'            // 背景色为红色
+//  | 'greenBG'          // 背景色为绿色
+//  | 'yellowBG'         // 背景色为黄色
+//  | 'blueBG'           // 背景色为蓝色
+//  | 'magentaBG'        // 背景色为品红
+//  | 'cyanBG'           // 背景色为青色
+//  | 'whiteBG'          // 背景色为白色
+  | 'overline'            // 上划线
+  | 'clear'               // 清屏
+
 declare type ColorInfo = { hex: string; red: number; green: number; blue: number }
 
 declare type ColorNames = 
@@ -158,7 +195,6 @@ declare type ColorsDict = Record<ColorNames, ColorInfo>
  * 7 - 反白显示;
  * 8 - 不可见;
  */
-declare type DisplatMode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8; 
 
 
 declare type RGBColor = {
@@ -171,4 +207,4 @@ declare type RGBColor = {
 
 declare type ColorTextUnit = ({text: string, bgColor?: ColorChannels|string, foreColor?: ColorChannels|string} | TextUnit)
 
-export { ColorInfo, ColorNames, ColorChannels, Color, ColorsDict, DisplatMode, ColorTypeCode, RGBColor, ColorTextUnit };
+export { DisplatMode, ColorInfo, ColorNames, ColorChannels, Color, ColorsDict, ColorTypeCode, RGBColor, ColorTextUnit };

@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "cls": "powershell -Command \"cls\"",
-    "excute": "ts-node node/index.ts",
-    "play:node": "nodemon -e ts --watch node --exec  \"pnpm run cls && pnpm run excute\"",
+    "excute": "ts-node src/index.ts",
+    "play:node": "nodemon -e ts --watch src --exec  \"pnpm run cls && pnpm run excute\"",
     "play:browser": "vite --host"
   },
   "keywords": [],

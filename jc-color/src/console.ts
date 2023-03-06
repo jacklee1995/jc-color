@@ -8,15 +8,13 @@ import { hexToChannels, rgbToChannels } from "./converter";
 
 /**
  * 用于创建颜色单元
- *
- * 一个颜色单元包含了文本、前景色、背景色、前景模式、背景模式
  */
 class TextUnit {
   private _text: string;
   private _foreColor: ColorChannels;
   private _bgColor: ColorChannels;
-  private _foreMode: DisplatMode;
-  private _bgMode: DisplatMode;
+  private _modes: Record<DisplatMode, boolean>;
+  private _endstyle: boolean; // 样式结束标志
   // 用于控制默认样式
   private readonly _default = { red: -1, green: -1, blue: -1 };
 
@@ -24,11 +22,24 @@ class TextUnit {
     text: string = "",
     foreColor: ColorChannels | string = "default",
     bgColor: ColorChannels | string = "default",
-    foreMode: DisplatMode = 2,
-    bgMode: DisplatMode = 2
+    modes: Record<DisplatMode, boolean> = {
+      reverse: false,
+      bold: false,
+      clear: false,
+      dark: false,
+      delete: false,
+      glimmer: false,
+      hidden: false,
+      italic: false,
+      overline: false,
+      underline: false,
+      underline_double: false,
+    },
+    endstyle: boolean = true,
   ) {
     this._text = text;
-
+    this._endstyle = endstyle;
+    this._modes = modes;
     if (isString(foreColor)) {
       foreColor = foreColor.toLowerCase();
       if (foreColor === "default") {
@@ -80,17 +91,299 @@ class TextUnit {
     } else {
       this._bgColor = bgColor;
     }
-
-    this._foreMode = foreMode;
-    this._bgMode = bgMode;
   }
+
   get text(): string {
     return this._text;
   }
+
+  /**结束符 */
+  get endstyle() {
+    return this._endstyle;
+  }
+
+  remove_color(text: string = this._text,) {
+    this.foreColor = "default";
+    this.bgColor = "default";
+    this._text = text;
+    return this
+  }
+
+  remove_bgColor(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor
+  ) {
+    this.bgColor = "default";
+    this._text = text;
+    this.foreColor = foreColor;
+    return this
+  }
+
+  remove_foreColor(
+    text: string = this._text,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this.foreColor = "default";
+    this._text = text;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  remove_italic(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.italic = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  // remove_font_sytles(){
+  //   this._modes.remove_all = true;
+  //   return this
+  // }
+
+  remove_bold(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    // this._modes.remove_bold = true;
+    this._modes.bold = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除闪烁 */
+  remove_glimmer(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    // this._modes.remove_glimmer = true;
+    this._modes.glimmer = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**重置背景色 */
+  reBgColor(bgColor: ColorChannels | string = this._bgColor){
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**重置前景色 */
+  reForeColor(foreColor: ColorChannels | string = this._foreColor,){
+    this.foreColor = foreColor;
+    return this
+  }
+
+  /**移除隐藏 */
+  remove_hidden(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.hidden = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除上划线 */
+  remove_overline(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    // this._modes.remove_overline = true;
+    this._modes.overline = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+  /**移除反转 */
+  remove_reverse(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.reverse = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除下划线 */
+  remove_underline(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.underline = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除双下划线 */
+  remove_underline_double(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.underline_double = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除删除线 */
+  remove_delete(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.delete = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**粗体 */
+  bold(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.bold = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+
+  /**闪烁 */
+  glimmer(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.glimmer = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+
+  // private _newTextUnit(...args: any[]){
+  //   return new TextUnit(...args);
+  // }
+
+  /**暗体 */
+  dark(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.dark = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+  /**删除线 */
+  delete(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.delete = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+  /**隐藏 */
+  hidden(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.hidden = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+  /**斜体 */
+  italic(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.italic = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+  /**上划线 */
+  overline(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.overline = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+  /**下划线 */
+  underline(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.underline = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+  /**双下划线 */
+  underline_double(
+    text: string = this._text,
+    foreColor: ColorChannels | string = this._foreColor,
+    bgColor: ColorChannels | string = this._bgColor
+  ) {
+    this._modes.underline_double = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+
+  /**获取背景色 */
   get bgColor(): ColorChannels {
     return this._bgColor;
   }
 
+  /**设置背景色 */
   set bgColor(bgColor: ColorChannels | string) {
     if (isString(bgColor)) {
       bgColor = bgColor.toLowerCase();
@@ -119,10 +412,12 @@ class TextUnit {
     }
   }
 
+  /**获取前景色 */
   get foreColor(): ColorChannels {
     return this._foreColor;
   }
 
+  /**设置前景色 */
   set foreColor(foreColor: ColorChannels | string) {
     if (isString(foreColor)) {
       foreColor = foreColor.toLowerCase();
@@ -151,12 +446,6 @@ class TextUnit {
     }
   }
 
-  get bgMode(): DisplatMode {
-    return this._bgMode;
-  }
-  get foreMode(): DisplatMode {
-    return this._foreMode;
-  }
   get value() {
     return {
       str: this._text,
@@ -166,47 +455,90 @@ class TextUnit {
   }
 
   get styleDescriptor() {
+
+
+    let decoration = "text-decoration:";
+    if (this._modes.underline || this._modes.underline_double) {
+      decoration += ' underline'
+    }
+
+    if (this._modes.overline) {
+      decoration += ' overline';                          // 浏览器终端未实现
+    }
+    if (this._modes.glimmer) {
+      decoration += ' blink';                             // 浏览器未实现
+    }
+    if (this._modes.delete) {
+      decoration += ' line-through'
+    }
+    if (decoration === "text-decoration:") {
+      decoration += 'inherit;'
+    } else {
+      decoration += ';'
+    }
+
     let res = "";
+
     if (this._foreColor !== this._default) {
-      res += `color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue})`;
+      // 正常前景色
+      if(!this._modes.reverse){
+        res += `color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+      }
+      // 前景色的反色
+      else{
+        res += `color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+      }
+      
     }
     if (this._bgColor !== this._default) {
-      res += `; background-color: rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue})`;
+      // 正常背景色
+      if(!this._modes.reverse){
+        res += `background-color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+      }
+      // 背景色反色
+      else{
+        res += `background-color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+      }
     }
+
+    res += decoration
+
+
+    // 解决浏览器未实现
+    // 上划线
+    if (this._modes.overline) {
+      res += `border-top:1px solid rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`
+    }
+    // 双下划线
+    if (this._modes.underline_double) {
+      res += `border-bottom:1px solid rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`
+    }
+
+
+    // console.log('res = "', res + "\"");
     return res
   }
 
-  get __str__() {
-    if (getPlatform() === "Node") {
-      if (
-        this._foreColor === this._default &&
-        this._bgColor !== this._default
-      ) {
-        return templates(this).Node.fore;
-      } else if (
-        this._foreColor !== this._default &&
-        this._bgColor === this._default
-      ) {
-        return templates(this).Node.back;
-      } else if (
-        this._foreColor === this._default &&
-        this._bgColor === this._default
-      ) {
-        return templates(this).Node;
-      }
-      return templates(this).Node.fore_back;
-    } else if (getPlatform() === "Browser") {
-      return templates(this).Browser;
-    }
+  get modes(): Record<DisplatMode, boolean> {
+    return this._modes
+  }
+
+  get node__str__() {
+      return templates(this).Node.default
+  }
+
+  get broswer__str__() {
     return templates(this).Browser;
   }
 
-  public print():void {
+  public print(str:string=this._text) {
+    this._text = str;
     if (getPlatform() === "Node") {
-      console.log(this.__str__);
+      console.log(this.node__str__);
     } else {
-      console.log(this.__str__, this.styleDescriptor);
+      console.log(this.broswer__str__, this.styleDescriptor);
     }
+    return this
   }
 }
 
@@ -217,58 +549,70 @@ class ColorText extends Array<TextUnit> {
   constructor(...units: ColorTextUnit[]) {
     super();
     this.push(...units)
-    
+
   }
 
   public push(
     ...units: ColorTextUnit[]
   ): number {
-    
-    if(units.length === 0){
+
+    if (units.length === 0) {
       noop();
     }
-    else if(units[0] instanceof TextUnit){
+    else if (units[0] instanceof TextUnit) {
       units.forEach((unit: ColorTextUnit) => {
-        if(unit instanceof TextUnit){
+        if (unit instanceof TextUnit) {
           super.push(unit)
-        }else{
+        } else {
           super.push(
             new TextUnit(unit.text, unit.foreColor, unit.bgColor)
           )
         }
-        
+
       });
-    }else{
+    } else {
       units.forEach((unit) =>
-      super.push(new TextUnit(unit.text, unit.bgColor, unit.foreColor))
-    );
+        super.push(new TextUnit(unit.text, unit.bgColor, unit.foreColor))
+      );
     }
     return this.length;
   }
-  public add(...units: ColorTextUnit[]){
+  public add(...units: ColorTextUnit[]) {
     this.push(...units)
   }
 
-  get __str__():string {
+  private node__str__(): string {
     let res = "";
-    this.forEach((unit) => (res += unit.__str__));
+    this.forEach((unit) => (res += unit.node__str__));
     return res;
   }
 
+  private browser__str__(): string {
+    return this.map((item: TextUnit) => {
+      return item.broswer__str__
+    }).join('');
+  }
+
   print() {
-    if (getPlatform() === "Node"){
-      console.log(this.__str__);
-    }else{
-      const str = this.map((item: TextUnit)=>{
-        return item.__str__
+    if (getPlatform() === "Node") {
+      console.log(this.node__str__());
+    } else {
+      const str = this.map((item: TextUnit) => {
+        return item.broswer__str__
       }).join('');
-      const style = this.map((item: TextUnit)=>{
+      const style = this.map((item: TextUnit) => {
         return item.styleDescriptor
       });
       console.log(str, ...style);
-      
+
     }
+    return this
   }
+}
+
+
+function print() {
+
 }
 
 export { TextUnit, ColorText };

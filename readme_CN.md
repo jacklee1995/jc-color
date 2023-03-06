@@ -1,14 +1,15 @@
 # jc-color
 
 
-一个 JavaScript/NodeJS 颜色用具，可以用于 **颜色类型转换**、**调色**、**控制台输出**。它不仅可以用于**浏览器**，还可以用于  **NodeJS**。
+
 
 
 <fieldset>
-  <legend>关于...</legend>
+  <legend>关于 jc-color...</legend>
   <p><b>作者</b> : <a href="https://blog.csdn.net/qq_28550263?spm=1010.2135.3001.5343"><cite>李俊才 </cite></a></p>
   <p><b>邮箱</b> : <a href="mailto:291148484@163.com"><cite>291148484@163.com</cite></a></p>
   <p><b>github</b> : <a href="https://github.com/jacklee1995/jc-color">https://github.com/jacklee1995/jc-color</a></p>
+  <b>简介</b> :  <p> jc-color 是一个 JavaScript/NodeJS 颜色工具，可以用于 <b>颜色类型转换</b>、<b>调色</b>、<b>控制台输出</b>。它不仅可以用于 <b>浏览器</b>，还可以用于  <b>NodeJS</b>。</p>
 </fieldset><br>
 
 
@@ -22,18 +23,11 @@
 ### 使用 npm 来安装
 
 ```shell
+# use npm
 npm install jc-color
-```
-
-### 使用 yarn 来安装
-
-```shell
+# use yarn
 yarn add jc-color
-```
-
-### 使用 pnpm 来安装
-
-```shell
+# use pnpm
 pnpm install jc-color
 ```
 
@@ -155,8 +149,8 @@ unit3.print();
 
 为了方便使用，`jc-color` 已经预先定义好了一些常见的颜色名。这些颜色名与CSS定义的颜色总体一致。各颜色名与对应的值如下：
 
-| 颜色名         | 十六进制颜色值 | 颜色展示                                                  |  | 颜色名               | 十六进制颜色值 | 颜色展示                                                  |
-| :------------- | :------------- | :-------------------------------------------------------- | :- | :------------------- | :------------- | :-------------------------------------------------------- |
+| 颜色名         | 十六进制颜色值 | 颜色展示                                            |  | 颜色名               | 十六进制颜色值 | 颜色展示                                            |
+| :------------- | :------------- | :-------------------------------------------------- |:-| :------------------- | :------------- | :-------------------------------------------------- |
 | black          | #000000        | <table><td bgcolor="#000000">`#000000`</td></table> |  | navy                 | #000080        | <table><td bgcolor="#000080">`#000080`</td></table> |
 | darkblue       | #00008B        | <table><td bgcolor="#00008B">`#00008B`</td></table> |  | mediumblue           | #0000CD        | <table><td bgcolor="#0000CD">`#0000CD`</td></table> |
 | blue           | #0000FF        | <table><td bgcolor="#0000FF">`#0000FF`</td></table> |  | darkgreen            | #006400        | <table><td bgcolor="#006400">`#006400`</td></table> |

@@ -1,4 +1,4 @@
-import { ColorTypeCode, TextUnit } from "..";
+import { ColorChannels, ColorTypeCode, DisplatMode, TextUnit } from "..";
 
 
 function hasDomAndWin() {
@@ -28,13 +28,97 @@ function getPlatform():Platform {
   }
 }
 
+
+
+
+const styles = {
+  remove_all :       '\x1B[0m',  // √取消下划线
+  bold      :        '\x1B[1m',  // √高亮
+  dark      :        '\x1B[2m',  // √暗色
+  italic    :        '\x1B[3m',  // √斜体
+  underline :        '\x1B[4m',  // √下划线
+  glimmer   :        '\x1B[5m',  // √闪烁
+  reverse   :        '\x1B[7m',  // √反向
+  hidden    :        '\x1B[8m',  // √隐藏
+  delete    :        '\x1B[9m',  // √删除
+  underline_double : '\x1B[21m', // √双下划线
+  remove_bold      : '\x1B[22m', // √取消高亮
+  remove_underline : '\x1B[24m', // √取消下划线
+  remove_glimmer   : '\x1B[25m', // √取消闪烁
+  remove_reverse   : '\x1B[27m', // √取消反向
+  remove_hidden    : '\x1B[28m', // √取消隐藏
+  remove_delete    : '\x1B[29m', // √取消删除线
+  // black     :        '\x1B[30m', // 黑色
+  // red       :        '\x1B[31m', // 红色
+  // green     :        '\x1B[32m', // 绿色
+  // yellow    :        '\x1B[33m', // 黄色
+  // blue      :        '\x1B[34m', // 蓝色
+  // magenta   :        '\x1B[35m', // 品红
+  // cyan      :        '\x1B[36m', // 青色
+  // white     :        '\x1B[37m', // 白色
+  // setFColor :        '\x1B[38m', // 前景色
+  // blackBG   :        '\x1B[40m', // 背景色为黑色
+  // redBG     :        '\x1B[41m', // 背景色为红色
+  // greenBG   :        '\x1B[42m', // 背景色为绿色
+  // yellowBG  :        '\x1B[43m', // 背景色为黄色
+  // blueBG    :        '\x1B[44m', // 背景色为蓝色
+  // magentaBG :        '\x1B[45m', // 背景色为品红
+  // cyanBG    :        '\x1B[46m', // 背景色为青色
+  // whiteBG   :        '\x1B[47m', // 背景色为白色
+  // setBColor :        '\x1B[48m', // 背景色
+  overline            : '\x1B[53m', // √上划线
+  remove_overline     : '\x1B[55m', // √取消上划线
+  clear               : '\x1B[2J',  // √清屏
+}
+
+const countNodeStyle = (modes:  Record<DisplatMode, boolean>, that:TextUnit) => {
+  let res = "";
+  const cDefault = { red: -1, green: -1, blue: -1 };
+  
+  // 清屏
+  if(modes.clear){
+    res += styles['clear'];
+  }
+
+  // 清理以前单元的影响
+  res += styles['remove_all']
+  // 再设置亮（粗）暗（加灰）
+  if(modes.bold){res += styles['bold']}
+  else if(modes.dark){res += styles['dark']}
+  
+  // 再设置样式
+  if(modes.italic){res += styles['italic']}
+  if(modes.underline){res += styles['underline']}
+  if(modes.underline_double){res += styles['underline_double']}
+  if(modes.glimmer){res += styles['glimmer']}
+  if(modes.reverse){res += styles['reverse']}
+  if(modes.hidden){res += styles['hidden']}
+  if(modes.delete){res += styles['delete']}
+  if(modes.overline){res += styles['overline']}
+  
+  // 再设置颜色
+  // 前景色
+  if(that.foreColor !== cDefault){
+    res += `\x1B[1;${ColorTypeCode.frColor};2;${that.foreColor.red};${that.foreColor.green};${that.foreColor.blue}m`
+  }
+  // 背景色
+  if(that.bgColor !== cDefault){
+    res += `\x1B[1;${ColorTypeCode.bgClolr};2;${that.bgColor.red};${that.bgColor.green};${that.bgColor.blue}m`
+  }
+  
+  // 添加文本
+  res += that.text;
+
+  // 最后处理样式结束标志
+  if(that.endstyle){res += `\x1B[0m`;}
+  return res
+}
+
 const templates = (that:TextUnit) => {
   return {
     "Node": {
       "styless": `\x1B[0m${that.text}`,
-      "fore": `\x1B[1;${ColorTypeCode.bgClolr};${that.bgMode};${that.bgColor.red};${that.bgColor.green};${that.bgColor.blue}m${that.text}\x1B[0m`,
-      "back": `\x1B[1;${ColorTypeCode.frColor};${that.foreMode};${that.foreColor.red};${that.foreColor.green};${that.foreColor.blue}m${that.text}\x1B[0m`,
-      "fore_back": `\x1B[1;${ColorTypeCode.bgClolr};${that.bgMode};${that.bgColor.red};${that.bgColor.green};${that.bgColor.blue};1;${ColorTypeCode.frColor};${that.foreMode};${that.foreColor.red};${that.foreColor.green};${that.foreColor.blue}m${that.text}\x1B[0m`,
+      "default": countNodeStyle(that.modes,that),
     },
     "Browser": `%c${that.text}`
   }

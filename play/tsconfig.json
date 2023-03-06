@@ -33,7 +33,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "./node/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules"
