@@ -182,9 +182,12 @@ declare type ColorNames =
  | "ivory"
  | "white"
  
-declare type ColorChannels = Omit<ColorInfo, 'hex'>
+/**rgba 管道 */
+declare type RgbaChannels = { red: number; green: number; blue: number, a:number }
+/**rgb 管道 */
+declare type RgbColorChannels = Omit<RgbaChannels, 'a'>
 
-declare type Color = ColorNames | ColorChannels
+declare type Color = ColorNames | RgbColorChannels
 
 declare type ColorsDict = Record<ColorNames, ColorInfo>
 /**
@@ -205,6 +208,6 @@ declare type RGBColor = {
   typecode: ColorTypeCode;
 };
 
-declare type ColorTextUnit = ({text: string, bgColor?: ColorChannels|string, foreColor?: ColorChannels|string} | TextUnit)
+declare type ColorTextUnit = ({text: string, bgColor?: RgbColorChannels|string, foreColor?: RgbColorChannels|string} | TextUnit)
 
-export { DisplatMode, ColorInfo, ColorNames, ColorChannels, Color, ColorsDict, ColorTypeCode, RGBColor, ColorTextUnit };
+export { DisplatMode, ColorInfo, ColorNames, RgbaChannels, RgbColorChannels, Color, ColorsDict, ColorTypeCode, RGBColor, ColorTextUnit };

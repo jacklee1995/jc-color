@@ -3,5 +3,6 @@ export * from "./types"
 export * from "./converter"
 export * from "./console"
 export * from "./creator"
+export * from "./gradient"
 
 

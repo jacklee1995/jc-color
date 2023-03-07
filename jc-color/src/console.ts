@@ -1,27 +1,50 @@
 import { colorNames, colorsDict } from "./colors";
-import { getPlatform, isString, noop, templates } from "./utils";
+import { getPlatform, isNumber, isString, noop, templates } from "./utils";
 import { ColorTypeCode } from "./enums";
-
-import type { ColorChannels, ColorNames, ColorTextUnit, DisplatMode, RGBColor } from "./types";
+import { creatGeadient } from "./gradient";
+import type { RgbColorChannels, ColorNames, ColorTextUnit, DisplatMode, RGBColor } from "./types";
 import { isHexColor, isRgbColor } from "./colorIs";
 import { hexToChannels, rgbToChannels } from "./converter";
+import { json } from "stream/consumers";
 
 /**
  * 用于创建颜色单元
  */
 class TextUnit {
   private _text: string;
-  private _foreColor: ColorChannels;
-  private _bgColor: ColorChannels;
+  private _foreColor: RgbColorChannels;
+  private _bgColor: RgbColorChannels;
   private _modes: Record<DisplatMode, boolean>;
   private _endstyle: boolean; // 样式结束标志
+  // 仅仅用于浏览器的标志
+  // private _browserModes:{
+  //  size:number,
+  // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // 用于控制默认样式
   private readonly _default = { red: -1, green: -1, blue: -1 };
 
   constructor(
-    text: string = "",
-    foreColor: ColorChannels | string = "default",
-    bgColor: ColorChannels | string = "default",
+    text: string | number = "",
+    foreColor: RgbColorChannels | string = "default",
+    bgColor: RgbColorChannels | string = "default",
     modes: Record<DisplatMode, boolean> = {
       reverse: false,
       bold: false,
@@ -37,7 +60,7 @@ class TextUnit {
     },
     endstyle: boolean = true,
   ) {
-    this._text = text;
+    this._text = text.toString();
     this._endstyle = endstyle;
     this._modes = modes;
     if (isString(foreColor)) {
@@ -63,7 +86,11 @@ class TextUnit {
         };
       }
     } else {
+      
+      
       this._foreColor = foreColor;
+      // console.log("this._foreColor =",this._foreColor);
+      
     }
 
     if (isString(bgColor)) {
@@ -111,7 +138,7 @@ class TextUnit {
 
   remove_bgColor(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor
+    foreColor: RgbColorChannels | string = this._foreColor
   ) {
     this.bgColor = "default";
     this._text = text;
@@ -121,7 +148,7 @@ class TextUnit {
 
   remove_foreColor(
     text: string = this._text,
-    bgColor: ColorChannels | string = this._bgColor
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this.foreColor = "default";
     this._text = text;
@@ -131,8 +158,8 @@ class TextUnit {
 
   remove_italic(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.italic = false;
     this._text = text;
@@ -148,8 +175,8 @@ class TextUnit {
 
   remove_bold(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     // this._modes.remove_bold = true;
     this._modes.bold = false;
@@ -162,8 +189,8 @@ class TextUnit {
   /**移除闪烁 */
   remove_glimmer(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     // this._modes.remove_glimmer = true;
     this._modes.glimmer = false;
@@ -174,13 +201,13 @@ class TextUnit {
   }
 
   /**重置背景色 */
-  reBgColor(bgColor: ColorChannels | string = this._bgColor){
+  reBgColor(bgColor: RgbColorChannels | string = this._bgColor) {
     this.bgColor = bgColor;
     return this
   }
 
   /**重置前景色 */
-  reForeColor(foreColor: ColorChannels | string = this._foreColor,){
+  reForeColor(foreColor: RgbColorChannels | string = this._foreColor,) {
     this.foreColor = foreColor;
     return this
   }
@@ -188,8 +215,8 @@ class TextUnit {
   /**移除隐藏 */
   remove_hidden(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.hidden = false;
     this._text = text;
@@ -201,8 +228,8 @@ class TextUnit {
   /**移除上划线 */
   remove_overline(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     // this._modes.remove_overline = true;
     this._modes.overline = false;
@@ -214,8 +241,8 @@ class TextUnit {
   /**移除反转 */
   remove_reverse(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.reverse = false;
     this._text = text;
@@ -227,8 +254,8 @@ class TextUnit {
   /**移除下划线 */
   remove_underline(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.underline = false;
     this._text = text;
@@ -240,8 +267,8 @@ class TextUnit {
   /**移除双下划线 */
   remove_underline_double(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.underline_double = false;
     this._text = text;
@@ -253,8 +280,8 @@ class TextUnit {
   /**移除删除线 */
   remove_delete(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.delete = false;
     this._text = text;
@@ -266,8 +293,8 @@ class TextUnit {
   /**粗体 */
   bold(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.bold = true;
     this.foreColor = foreColor;
@@ -279,8 +306,8 @@ class TextUnit {
   /**闪烁 */
   glimmer(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.glimmer = true;
     this.foreColor = foreColor;
@@ -296,8 +323,8 @@ class TextUnit {
   /**暗体 */
   dark(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.dark = true;
     this.foreColor = foreColor;
@@ -308,8 +335,8 @@ class TextUnit {
   /**删除线 */
   delete(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.delete = true;
     this.foreColor = foreColor;
@@ -320,8 +347,8 @@ class TextUnit {
   /**隐藏 */
   hidden(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.hidden = true;
     this.foreColor = foreColor;
@@ -332,8 +359,8 @@ class TextUnit {
   /**斜体 */
   italic(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.italic = true;
     this.foreColor = foreColor;
@@ -344,8 +371,8 @@ class TextUnit {
   /**上划线 */
   overline(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.overline = true;
     this.foreColor = foreColor;
@@ -356,8 +383,8 @@ class TextUnit {
   /**下划线 */
   underline(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.underline = true;
     this.foreColor = foreColor;
@@ -368,8 +395,8 @@ class TextUnit {
   /**双下划线 */
   underline_double(
     text: string = this._text,
-    foreColor: ColorChannels | string = this._foreColor,
-    bgColor: ColorChannels | string = this._bgColor
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.underline_double = true;
     this.foreColor = foreColor;
@@ -379,12 +406,12 @@ class TextUnit {
   }
 
   /**获取背景色 */
-  get bgColor(): ColorChannels {
+  get bgColor(): RgbColorChannels {
     return this._bgColor;
   }
 
   /**设置背景色 */
-  set bgColor(bgColor: ColorChannels | string) {
+  set bgColor(bgColor: RgbColorChannels | string) {
     if (isString(bgColor)) {
       bgColor = bgColor.toLowerCase();
       if (bgColor === "default") {
@@ -413,12 +440,12 @@ class TextUnit {
   }
 
   /**获取前景色 */
-  get foreColor(): ColorChannels {
+  get foreColor(): RgbColorChannels {
     return this._foreColor;
   }
 
   /**设置前景色 */
-  set foreColor(foreColor: ColorChannels | string) {
+  set foreColor(foreColor: RgbColorChannels | string) {
     if (isString(foreColor)) {
       foreColor = foreColor.toLowerCase();
       if (foreColor === "default") {
@@ -455,8 +482,6 @@ class TextUnit {
   }
 
   get styleDescriptor() {
-
-
     let decoration = "text-decoration:";
     if (this._modes.underline || this._modes.underline_double) {
       decoration += ' underline'
@@ -478,31 +503,35 @@ class TextUnit {
     }
 
     let res = "";
+    res += decoration;
 
+    // 前景色
     if (this._foreColor !== this._default) {
       // 正常前景色
-      if(!this._modes.reverse){
+      if (!this._modes.reverse) {
         res += `color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
       }
       // 前景色的反色
-      else{
+      else {
         res += `color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
       }
-      
+
     }
+    // 背景色
     if (this._bgColor !== this._default) {
       // 正常背景色
-      if(!this._modes.reverse){
+      if (!this._modes.reverse) {
         res += `background-color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
       }
       // 背景色反色
-      else{
+      else {
         res += `background-color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
       }
     }
-
-    res += decoration
-
+    // 文字加粗
+    if (this._modes.bold) {
+      res += 'font-weight:bold;'
+    }
 
     // 解决浏览器未实现
     // 上划线
@@ -524,14 +553,14 @@ class TextUnit {
   }
 
   get node__str__() {
-      return templates(this).Node.default
+    return templates(this).Node.default
   }
 
   get broswer__str__() {
     return templates(this).Browser;
   }
 
-  public print(str:string=this._text) {
+  public print(str: string = this._text) {
     this._text = str;
     if (getPlatform() === "Node") {
       console.log(this.node__str__);
@@ -552,7 +581,7 @@ class ColorText extends Array<TextUnit> {
 
   }
 
-  public push(
+  private _pushUnit(
     ...units: ColorTextUnit[]
   ): number {
 
@@ -577,6 +606,27 @@ class ColorText extends Array<TextUnit> {
     }
     return this.length;
   }
+
+  public push(...args: any[]) {
+    for (let index = 0; index < args.length; index++) {
+      const elem = args[index];
+      if (elem instanceof TextUnit) {
+        this._pushUnit(elem)
+      }
+      else if (elem instanceof ColorText) {
+        elem.forEach(elem => this._pushUnit(elem))
+      }
+      else if (isString(elem) || isNumber(elem)) {
+        this._pushUnit(new TextUnit(elem))
+      }
+      else {
+        this._pushUnit(new TextUnit(elem.toString()))
+      }
+    }
+    return this.length;
+  }
+
+
   public add(...units: ColorTextUnit[]) {
     this.push(...units)
   }
@@ -604,15 +654,58 @@ class ColorText extends Array<TextUnit> {
         return item.styleDescriptor
       });
       console.log(str, ...style);
-
     }
     return this
   }
 }
 
+/**
+ * 指定字符串和起止颜色，创建颜色梯度字符串
+ * @param str 
+ * @param foreColors 
+ * @param bgColors 
+ * @returns 颜色梯度字符串
+ */
+function geadientText(
+  str: string,
+  foreColors: (string | RgbColorChannels)[],
+  bgColors: (string | RgbColorChannels)[] = [],
+) {
+  const len = str.length;
+  let ct = new ColorText();
+  // 定义了背景色梯度
+  if (bgColors.length !== 0) {
+    const foreChannels = creatGeadient(foreColors, len);
+    const bgChannels = creatGeadient(bgColors, len);
+    for (let index = 0; index < len - 1; index++) {
+      const char = str[index];
+      const foreColor = foreChannels[index];
+      const bgColor = bgChannels[index];
+      ct.push(
+        new TextUnit(char, foreColor, bgColor)
+      )
+    }
+  }
+  // 未定义背景色梯度 
+  else {
+    const foreChannels = creatGeadient(foreColors, len);
+    // console.log(foreChannels);
+    
+    for (let index = 0; index < len - 1; index++) {
+      const char = str[index];
+      const foreColor = foreChannels[index];
+      // console.log("char, foreColor ===",char, foreColor);
+      const u = new TextUnit(char, foreColor)
+      // u.print()
+      // console.log("\nforeColor =",foreColor);
+      // console.log(`char: ${char}, fcolor:${JSON.stringify(u.foreColor)}, rgb(${foreColor.red},${foreColor.green},${foreColor.blue})`);
+      // console.log(`char: ${char}, fcolor:${JSON.stringify(u.foreColor)}, bColor:${JSON.stringify(u.bgColor)}`);
+      
+      ct.push(u)
+    }
+  }
 
-function print() {
-
+  return ct
 }
 
-export { TextUnit, ColorText };
+export { TextUnit, ColorText, geadientText };

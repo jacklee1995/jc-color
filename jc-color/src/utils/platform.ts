@@ -1,4 +1,4 @@
-import { ColorChannels, ColorTypeCode, DisplatMode, TextUnit } from "..";
+import { ColorTypeCode, DisplatMode, TextUnit } from "..";
 
 
 function hasDomAndWin() {
@@ -27,8 +27,6 @@ function getPlatform():Platform {
     return "Browser"
   }
 }
-
-
 
 
 const styles = {
@@ -99,11 +97,11 @@ const countNodeStyle = (modes:  Record<DisplatMode, boolean>, that:TextUnit) => 
   // 再设置颜色
   // 前景色
   if(that.foreColor !== cDefault){
-    res += `\x1B[1;${ColorTypeCode.frColor};2;${that.foreColor.red};${that.foreColor.green};${that.foreColor.blue}m`
+    res += `\x1B[1;${ColorTypeCode.frColor};2;${parseInt(that.foreColor.red.toString())};${parseInt(that.foreColor.green.toString(),10)};${parseInt(that.foreColor.blue.toString(),10)}m`
   }
   // 背景色
   if(that.bgColor !== cDefault){
-    res += `\x1B[1;${ColorTypeCode.bgClolr};2;${that.bgColor.red};${that.bgColor.green};${that.bgColor.blue}m`
+    res += `\x1B[1;${ColorTypeCode.bgClolr};2;${parseInt(that.bgColor.red.toString())};${parseInt(that.bgColor.green.toString())};${parseInt(that.bgColor.blue.toString())}m`
   }
   
   // 添加文本

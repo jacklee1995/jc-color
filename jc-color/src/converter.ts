@@ -1,13 +1,13 @@
 import { regHex3, regHex6, regRgb } from "./regs";
-import { ColorChannels } from "./types";
+import type { RgbColorChannels } from "./types";
 import { ValueError } from "./utils";
 
 /**
- * 三位十六进制颜色转通道值
+ * 从 十六进制颜色（3位） 表达式中提取到颜色通道
  * @param val 一个三位十六进制数表示的颜色，如 "#7F2"
  * @returns 颜色通道
  */
-function hex3ToChannels(val: string): ColorChannels | null {
+function hex3ToChannels(val: string): RgbColorChannels | null {
   if (regHex3.test(val)) {
     return {
       red: parseInt(val[1].repeat(2).slice(0, 2), 16),
@@ -19,11 +19,11 @@ function hex3ToChannels(val: string): ColorChannels | null {
 }
 
 /**
- * 六位十六进制颜色转通道值
+ * 从 十六进制颜色（6位） 表达式中提取到颜色通道
  * @param val 一个六位十六进制数表示的颜色值，如 "#9C6CD"
  * @returns 颜色通道
  */
-function hex6ToChannels(val: string): ColorChannels | null {
+function hex6ToChannels(val: string): RgbColorChannels | null {
   if (regHex6.test(val)) {
     return {
       red: parseInt(val.slice(1, 3), 16),
@@ -35,11 +35,11 @@ function hex6ToChannels(val: string): ColorChannels | null {
 }
 
 /**
- * 将十六进制颜色值用RGB通道表示
+ * 从 十六进制颜色（3或6位） 表达式中提取到颜色通道
  * @param val
  * @returns
  */
-function hexToChannels(val: string, strct = false): ColorChannels {
+function hexToChannels(val: string, strct = false): RgbColorChannels {
   let hex3 = hex3ToChannels(val);
   if (hex3 !== null) {
     return hex3;
@@ -63,7 +63,13 @@ function hexToChannels(val: string, strct = false): ColorChannels {
   };
 }
 
-function rgbToChannels(val: string, strct = false): ColorChannels {
+/**
+ * 从 rgb() 表达式中提取到颜色通道
+ * @param val rgb() 表达式
+ * @param strct 
+ * @returns 
+ */
+function rgbToChannels(val: string, strct = false): RgbColorChannels {
   let _ = val.trim();
   const res = {
     red: 0,
@@ -98,7 +104,7 @@ function rgbToChannels(val: string, strct = false): ColorChannels {
  * @param val
  * @returns
  */
-function computHex3(val: ColorChannels): string {
+function computHex3(val: RgbColorChannels): string {
   return val.red.toString(16) + val.green.toString(16) + val.blue.toString(16);
 }
 
@@ -107,16 +113,18 @@ function computHex3(val: ColorChannels): string {
  * @param val
  * @returns
  */
-function computHex6(val: ColorChannels): string {
+function computHex6(val: RgbColorChannels): string {
   return val.red.toString(16) + val.green.toString(16) + val.blue.toString(16);
 }
 
 /**
  * 将三位十六进制数颜色转换为六位十六进制数颜色
+ * 暂未实现
  * @param val
  * @returns
  */
 function Hex3ToHex6(val: string): string {
+
   return "";
 }
 
@@ -125,7 +133,7 @@ function Hex3ToHex6(val: string): string {
  * @param val 
  * @returns 
  */
-function hexToRgb(val: string): ColorChannels {
+function hexToRgb(val: string): RgbColorChannels {
   return { red: 0, green: 0, blue: 0 };
 }
 
@@ -134,10 +142,17 @@ function hexToRgb(val: string): ColorChannels {
  * @param rgb 将 rgb 颜色转换为
  * @returns 
  */
-function rgbToHex(rgb: string): string {
+function rgbToHex(val: string): string {
   return "";
 }
 
+
+function hslToChannels() { }
+function hslToRgb() { }
+function hslToHex() { }
+
+function rgbToHsl() { }
+function hexToHsl() { }
 export {
   hex3ToChannels,
   hex6ToChannels,
@@ -147,5 +162,5 @@ export {
   hexToChannels,
   rgbToChannels,
   hexToRgb,
-  rgbToHex,
+  // rgbToHex,
 };

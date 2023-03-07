@@ -10,8 +10,23 @@ const isString = (val: unknown): val is string => {
   return _is(val, "String");
 };
 
-function isNumber(val: unknown): val is number {
+/**判断是否是数字，不包括字符串等表示的数字 */
+const isNumber = (val: unknown): val is number => {
   return _is(val, "Number");
+}
+
+/**判断一个数字是否是奇数 */
+const isOddNumber = (val:number) => {
+  return val%2!==0
+}
+
+/**判断一个数字是否是偶数数 */
+const isEvenNumber = (val:number) => {
+  return val%2===0
+}
+
+const isNumberStr = (val: string):boolean => {
+  return /^\d*\.?\d*$/.test(val)
 }
 
 const isInt = (val: unknown): boolean => {
@@ -19,6 +34,8 @@ const isInt = (val: unknown): boolean => {
     if (/^\d*\d$/.test(val.toString())) {
       return true;
     }
+  }else if(isString(val) && isNumberStr(val)){
+    return /^\d*\d$/.test(val)
   }
   return false;
 };
@@ -81,6 +98,9 @@ export {
   isBoolean,
   isString,
   isNumber,
+  isOddNumber,
+  isEvenNumber,
+  isNumberStr,
   isInt,
   isObject,
   isArray,

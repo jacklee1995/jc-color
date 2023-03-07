@@ -1,5 +1,5 @@
 import { regHex } from "./regs";
-import type { Color, ColorChannels, ColorInfo, ColorsDict } from "./types";
+import type { Color, RgbColorChannels, ColorInfo, ColorsDict } from "./types";
 import { isObject, isString } from "./utils";
 
 import { computHex3, computHex6, rgbToChannels, hexToChannels, hexToRgb } from "./converter";
@@ -854,7 +854,7 @@ class Channels {
   private _green: number = 0;
   private _blue: number = 0;
 
-  constructor(color?: ColorChannels) {}
+  constructor(color?: RgbColorChannels) {}
   get value() {
     return {
       red: this._red,
@@ -862,7 +862,7 @@ class Channels {
       blue: this._blue,
     };
   }
-  set value(value: ColorChannels) {
+  set value(value: RgbColorChannels) {
     this._red = value.red;
     this._green = value.green;
     this._blue = value.blue;
@@ -943,7 +943,7 @@ class ColorBase {
   private _green: number = 0;
   private _blue: number = 0;
 
-  constructor(color: ColorChannels) {}
+  constructor(color: RgbColorChannels) {}
 
   get value() {
     return {

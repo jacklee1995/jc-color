@@ -1,4 +1,4 @@
-import { ColorChannels } from ".";
+import type { RgbColorChannels } from ".";
 import { ColorText, TextUnit } from "./console";
 
 // TODO: How to get the function name from the inside. 
@@ -144,17 +144,20 @@ const setBgColor = (unit: TextUnit) => {
     lightyellowBg: (): TextUnit => { unit.bgColor = "lightyellow"; return unit },
     ivoryBg: (): TextUnit => { unit.bgColor = "ivory"; return unit },
     whiteBg: (): TextUnit => { unit.bgColor = "white"; return unit },
-    bg: (color: ColorChannels | string) => {
+    bg: (color: RgbColorChannels | string) => {
       unit.bgColor = color;
       return unit
     },
     get _() {
       return unit;
+    },
+    print(){
+      return unit.print()
     }
   }
 }
 
-function unitFromName(msg: string, foreColorName: ColorChannels | string) {
+function unitFromName(msg: string, foreColorName: RgbColorChannels | string) {
   const unit = new TextUnit(msg, foreColorName)
   return setBgColor(unit)
 }
@@ -299,7 +302,7 @@ export function yellow(msg: string) { return unitFromName(msg, "yellow") }
 export function lightyellow(msg: string) { return unitFromName(msg, "lightyellow") }
 export function ivory(msg: string) { return unitFromName(msg, "ivory") }
 export function white(msg: string) { return unitFromName(msg, "white") }
-export function fr(msg: string, color: ColorChannels | string) {
+export function fr(msg: string, color: RgbColorChannels | string) {
   return unitFromName(msg, color)
 }
 
@@ -311,3 +314,46 @@ export function createText(...args: any[]) {
   return new ColorText(...args);
 }
 
+// const template = `
+
+// # 一级标题
+
+// edfwq ad fc sed tgh rtg #{red} hes fdeg sr **tgoi eahr** gfer grla *iouh rnrt* tyh #{/red} wthg etrg hrth rrth
+
+// ## 二级标题
+
+// ### 三级标题
+
+// `
+
+export function print(...args: any[]) {
+  const _ = new ColorText()
+  for (let index in args) {
+    _.push(args[index])
+  }
+  _.print()
+}
+
+export const h1 = () => {
+  return
+}
+export const h2 = () => { }
+export const h3 = () => { }
+export const h4 = () => { }
+export const h5 = () => { }
+export const h6 = () => { }
+export const  line = (num:number, contents:any, ) => {
+
+}
+export const timeLine = () => {
+
+}
+
+export const json = () => { }
+
+export const trace = () => {}
+export const debug = () => {}
+export const info = () => {}
+export const warn = () => {}
+export const error = () => {}
+export const fatal = () => {}
