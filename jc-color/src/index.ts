@@ -1,8 +1,7 @@
-export * from "./colors"
-export * from "./types"
-export * from "./converter"
 export * from "./console"
-export * from "./creator"
-export * from "./gradient"
+export * from "./types"
+export * from "./converters"
+export * from "./utils"
+export * from "./core"
 
 

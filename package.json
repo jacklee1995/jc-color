@@ -11,7 +11,8 @@
     "play:browser": "nodemon -e ts --watch jc-color/dist --exec \"pnpm run -C play play:browser\"",
     "docs:dev": "pnpm run -C docs dev",
     "docs:build": "pnpm run -C docs build",
-    "docs:preview": "pnpm run -C docs preview"
+    "docs:preview": "pnpm run -C docs preview",
+    "prepare": "husky install"
   },
   "homepage": "https://github.com/jacklee1995/jc-color",
   "keywords": [

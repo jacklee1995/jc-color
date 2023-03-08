@@ -1,4 +1,5 @@
-import { ColorTypeCode, DisplatMode, TextUnit } from "..";
+import {  TextUnit } from "./print";
+import { ColorTypeCode, DisplatMode } from "../types";
 
 
 function hasDomAndWin() {
@@ -30,15 +31,15 @@ function getPlatform():Platform {
 
 
 const styles = {
-  remove_all :       '\x1B[0m',  // √取消下划线
-  bold      :        '\x1B[1m',  // √高亮
-  dark      :        '\x1B[2m',  // √暗色
-  italic    :        '\x1B[3m',  // √斜体
-  underline :        '\x1B[4m',  // √下划线
-  glimmer   :        '\x1B[5m',  // √闪烁
-  reverse   :        '\x1B[7m',  // √反向
-  hidden    :        '\x1B[8m',  // √隐藏
-  delete    :        '\x1B[9m',  // √删除
+  remove_all       : '\x1B[0m',  // √取消下划线
+  bold             : '\x1B[1m',  // √高亮
+  dark             : '\x1B[2m',  // √暗色
+  italic           : '\x1B[3m',  // √斜体
+  underline        : '\x1B[4m',  // √下划线
+  glimmer          : '\x1B[5m',  // √闪烁
+  reverse          : '\x1B[7m',  // √反向
+  hidden           : '\x1B[8m',  // √隐藏
+  delete           : '\x1B[9m',  // √删除
   underline_double : '\x1B[21m', // √双下划线
   remove_bold      : '\x1B[22m', // √取消高亮
   remove_underline : '\x1B[24m', // √取消下划线
@@ -46,27 +47,9 @@ const styles = {
   remove_reverse   : '\x1B[27m', // √取消反向
   remove_hidden    : '\x1B[28m', // √取消隐藏
   remove_delete    : '\x1B[29m', // √取消删除线
-  // black     :        '\x1B[30m', // 黑色
-  // red       :        '\x1B[31m', // 红色
-  // green     :        '\x1B[32m', // 绿色
-  // yellow    :        '\x1B[33m', // 黄色
-  // blue      :        '\x1B[34m', // 蓝色
-  // magenta   :        '\x1B[35m', // 品红
-  // cyan      :        '\x1B[36m', // 青色
-  // white     :        '\x1B[37m', // 白色
-  // setFColor :        '\x1B[38m', // 前景色
-  // blackBG   :        '\x1B[40m', // 背景色为黑色
-  // redBG     :        '\x1B[41m', // 背景色为红色
-  // greenBG   :        '\x1B[42m', // 背景色为绿色
-  // yellowBG  :        '\x1B[43m', // 背景色为黄色
-  // blueBG    :        '\x1B[44m', // 背景色为蓝色
-  // magentaBG :        '\x1B[45m', // 背景色为品红
-  // cyanBG    :        '\x1B[46m', // 背景色为青色
-  // whiteBG   :        '\x1B[47m', // 背景色为白色
-  // setBColor :        '\x1B[48m', // 背景色
-  overline            : '\x1B[53m', // √上划线
-  remove_overline     : '\x1B[55m', // √取消上划线
-  clear               : '\x1B[2J',  // √清屏
+  overline         : '\x1B[53m', // √上划线
+  remove_overline  : '\x1B[55m', // √取消上划线
+  clear            : '\x1B[2J',  // √清屏
 }
 
 const countNodeStyle = (modes:  Record<DisplatMode, boolean>, that:TextUnit) => {
@@ -97,11 +80,22 @@ const countNodeStyle = (modes:  Record<DisplatMode, boolean>, that:TextUnit) => 
   // 再设置颜色
   // 前景色
   if(that.foreColor !== cDefault){
-    res += `\x1B[1;${ColorTypeCode.frColor};2;${parseInt(that.foreColor.red.toString())};${parseInt(that.foreColor.green.toString(),10)};${parseInt(that.foreColor.blue.toString(),10)}m`
+    // 使用反色
+    if(that.modes.inverseFore){
+      res += `\x1B[1;${ColorTypeCode.frColor};2;${255-parseInt(that.foreColor.red.toString())};${255-parseInt(that.foreColor.green.toString(),10)};${255-parseInt(that.foreColor.blue.toString(),10)}m`;
+    }else{
+      res += `\x1B[1;${ColorTypeCode.frColor};2;${parseInt(that.foreColor.red.toString())};${parseInt(that.foreColor.green.toString(),10)};${parseInt(that.foreColor.blue.toString(),10)}m`;
+    }
   }
   // 背景色
   if(that.bgColor !== cDefault){
-    res += `\x1B[1;${ColorTypeCode.bgClolr};2;${parseInt(that.bgColor.red.toString())};${parseInt(that.bgColor.green.toString())};${parseInt(that.bgColor.blue.toString())}m`
+    // 使用反色
+    if(that.modes.inverseBg){
+      res += `\x1B[1;${ColorTypeCode.bgClolr};2;${255-parseInt(that.bgColor.red.toString())};${255-parseInt(that.bgColor.green.toString())};${255-parseInt(that.bgColor.blue.toString())}m`;
+    }
+    else{
+      res += `\x1B[1;${ColorTypeCode.bgClolr};2;${parseInt(that.bgColor.red.toString())};${parseInt(that.bgColor.green.toString())};${parseInt(that.bgColor.blue.toString())}m`;
+    }
   }
   
   // 添加文本

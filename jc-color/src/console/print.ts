@@ -1,11 +1,14 @@
 import { colorNames, colorsDict } from "./colors";
-import { getPlatform, isNumber, isString, noop, templates } from "./utils";
-import { ColorTypeCode } from "./enums";
-import { creatGeadient } from "./gradient";
-import type { RgbColorChannels, ColorNames, ColorTextUnit, DisplatMode, RGBColor } from "./types";
-import { isHexColor, isRgbColor } from "./colorIs";
-import { hexToChannels, rgbToChannels } from "./converter";
-import { json } from "stream/consumers";
+import { isNumber, isNumberStr, isObject, isString, noop } from "../utils";
+import { creatGeadient } from "../core";
+import { isHexColor, isRgbChannels, isRgbColor } from "../types";
+import { hexToChannels, rgbToChannels } from "../converters";
+import { colorToChannel } from '../converters'
+import { getPlatform, templates } from "./platform";
+import { themes } from "./themes";
+
+import type { RgbColorChannels, ColorNames, ColorTextUnit, DisplatMode } from "../types";
+
 
 /**
  * 用于创建颜色单元
@@ -17,25 +20,7 @@ class TextUnit {
   private _modes: Record<DisplatMode, boolean>;
   private _endstyle: boolean; // 样式结束标志
   // 仅仅用于浏览器的标志
-  // private _browserModes:{
-  //  size:number,
-  // };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  private _fontSize:number = -1;
 
 
   // 用于控制默认样式
@@ -46,7 +31,9 @@ class TextUnit {
     foreColor: RgbColorChannels | string = "default",
     bgColor: RgbColorChannels | string = "default",
     modes: Record<DisplatMode, boolean> = {
-      reverse: false,
+      reverse: false,     // 前景色和背景色反转（互换）
+      inverseFore: false, // 前景色求反色，若反转，则在反转的基础上求反色
+      inverseBg: false,   // 背景色求反色，若反转，则在反转的基础上求反色
       bold: false,
       clear: false,
       dark: false,
@@ -86,11 +73,11 @@ class TextUnit {
         };
       }
     } else {
-      
-      
+
+
       this._foreColor = foreColor;
       // console.log("this._foreColor =",this._foreColor);
-      
+
     }
 
     if (isString(bgColor)) {
@@ -168,11 +155,6 @@ class TextUnit {
     return this
   }
 
-  // remove_font_sytles(){
-  //   this._modes.remove_all = true;
-  //   return this
-  // }
-
   remove_bold(
     text: string = this._text,
     foreColor: RgbColorChannels | string = this._foreColor,
@@ -238,13 +220,54 @@ class TextUnit {
     this.bgColor = bgColor;
     return this
   }
-  /**移除反转 */
+
+  /**移除颜色反转 */
   remove_reverse(
     text: string = this._text,
     foreColor: RgbColorChannels | string = this._foreColor,
     bgColor: RgbColorChannels | string = this._bgColor
   ) {
     this._modes.reverse = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除前景色反色 */
+  remove_inverseFore(
+    text: string = this._text,
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
+  ) {
+    this._modes.inverseFore = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除背景色反色 */
+  remove_inverseBg(
+    text: string = this._text,
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
+  ) {
+    this._modes.inverseBg = false;
+    this._text = text;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    return this
+  }
+
+  /**移除反色 */
+  remove_inverse(
+    text: string = this._text,
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
+  ) {
+    this._modes.inverseFore = false;
+    this._modes.inverseBg = false;
     this._text = text;
     this.foreColor = foreColor;
     this.bgColor = bgColor;
@@ -303,6 +326,60 @@ class TextUnit {
     return this;
   }
 
+  /**反转颜色：交换背景色和前景色 */
+  reverse(
+    text: string = this._text,
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
+  ) {
+    this._modes.reverse = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+
+  /**前景色反色 */
+  inverseFore(
+    text: string = this._text,
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
+  ) {
+    this._modes.inverseFore = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+
+  /**背景色反色 */
+  inverseBg(
+    text: string = this._text,
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
+  ) {
+    this._modes.inverseBg = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+
+  /**反色：前景色和背景色同时反色 */
+  inverse(
+    text: string = this._text,
+    foreColor: RgbColorChannels | string = this._foreColor,
+    bgColor: RgbColorChannels | string = this._bgColor
+  ) {
+    this._modes.inverseFore = true;
+    this._modes.inverseBg = true;
+    this.foreColor = foreColor;
+    this.bgColor = bgColor;
+    this._text = text;
+    return this;
+  }
+
+
   /**闪烁 */
   glimmer(
     text: string = this._text,
@@ -316,10 +393,6 @@ class TextUnit {
     return this;
   }
 
-  // private _newTextUnit(...args: any[]){
-  //   return new TextUnit(...args);
-  // }
-
   /**暗体 */
   dark(
     text: string = this._text,
@@ -332,6 +405,7 @@ class TextUnit {
     this._text = text;
     return this;
   }
+
   /**删除线 */
   delete(
     text: string = this._text,
@@ -344,6 +418,7 @@ class TextUnit {
     this._text = text;
     return this;
   }
+
   /**隐藏 */
   hidden(
     text: string = this._text,
@@ -356,6 +431,7 @@ class TextUnit {
     this._text = text;
     return this;
   }
+
   /**斜体 */
   italic(
     text: string = this._text,
@@ -368,6 +444,7 @@ class TextUnit {
     this._text = text;
     return this;
   }
+
   /**上划线 */
   overline(
     text: string = this._text,
@@ -380,6 +457,7 @@ class TextUnit {
     this._text = text;
     return this;
   }
+
   /**下划线 */
   underline(
     text: string = this._text,
@@ -473,11 +551,37 @@ class TextUnit {
     }
   }
 
+  /**
+   * 获取字体大小：当前仅浏览器控制台支持
+   */
+  get size(){
+    return this._fontSize
+  }
+
+  /**
+   * 设置字体大小：当前仅浏览器控制台支持
+   */
+  set size(val: number){
+    this._fontSize = val;
+  }
+
   get value() {
     return {
       str: this._text,
       background: this._bgColor,
       foreground: this._foreColor,
+      size: this._fontSize,
+      bold: this._modes.bold,
+      italic:this._modes.italic,
+      delete: this._modes.delete,
+      underline: this._modes.underline,
+      underline_double: this._modes.underline_double,
+      glimmer:this._modes.glimmer,
+      hidden:this._modes.hidden,
+      dark:this._modes.dark,
+      reverse:this._modes.reverse,
+      inverseFore:this._modes.inverseFore,
+      inverseBg:this._modes.inverseBg
     };
   }
 
@@ -507,30 +611,57 @@ class TextUnit {
 
     // 前景色
     if (this._foreColor !== this._default) {
-      // 正常前景色
+      // 不反转
       if (!this._modes.reverse) {
-        res += `color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+        // 使用反色
+        if (this._modes.inverseFore) {
+          res += `color:rgb(${255 - this._foreColor.red},${255 - this._foreColor.green},${255 - this._foreColor.blue});`;
+        }
+        else {
+          res += `color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+        }
       }
-      // 前景色的反色
+      // 反转前景色成背景色
       else {
-        res += `color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+        // 使用反色
+        if (this._modes.inverseFore) {
+          res += `color:rgb(${255 - this._bgColor.red},${255 - this._bgColor.green},${255 - this._bgColor.blue});`;
+        }
+        else {
+          res += `color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+        }
       }
 
     }
     // 背景色
     if (this._bgColor !== this._default) {
-      // 正常背景色
+      // 不反转
       if (!this._modes.reverse) {
-        res += `background-color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+        // 使用反色
+        if (this._modes.inverseBg) {
+          res += `background-color:rgb(${255 - this._bgColor.red},${255 - this._bgColor.green},${255 - this._bgColor.blue});`;
+        } else {
+          res += `background-color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+        }
       }
-      // 背景色反色
+      // 反转背景色成前景色
       else {
-        res += `background-color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+        // 使用反色
+        if (this._modes.inverseBg) {
+          res += `background-color:rgb(${255 - this._foreColor.red},${255 - this._foreColor.green},${255 - this._foreColor.blue});`;
+        } else {
+          res += `background-color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+        }
       }
     }
     // 文字加粗
     if (this._modes.bold) {
       res += 'font-weight:bold;'
+    }
+
+    // 斜体
+    if (this._modes.italic) {
+      res += 'font-style:italic;';
     }
 
     // 解决浏览器未实现
@@ -541,6 +672,11 @@ class TextUnit {
     // 双下划线
     if (this._modes.underline_double) {
       res += `border-bottom:1px solid rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`
+    }
+
+    // 仅用于浏览器的功能
+    if(this._fontSize>0){
+      res += `font-size:${parseInt(this._fontSize.toString(),10)}px`
     }
 
 
@@ -571,14 +707,10 @@ class TextUnit {
   }
 }
 
-
-
-
 class ColorText extends Array<TextUnit> {
   constructor(...units: ColorTextUnit[]) {
     super();
     this.push(...units)
-
   }
 
   private _pushUnit(
@@ -626,7 +758,68 @@ class ColorText extends Array<TextUnit> {
     return this.length;
   }
 
+  /**获取背景色 */
+  get bgColor(): RgbColorChannels[] {
+    return this.map((unit: TextUnit) => {
+      return unit.bgColor
+    });
+  }
 
+  /**设置背景色 */
+  set bgColor(bgColor: (RgbColorChannels | string)[] | RgbColorChannels | string) {
+    // 单色
+    if (isString(bgColor) || isRgbChannels(bgColor)) {
+      this.forEach((unit: TextUnit) => {
+        unit.bgColor = bgColor;
+      })
+    }
+    // 多色
+    else {
+      if (this.length <= bgColor.length) {
+        for (let i = 0; i < this.length; i++) {
+          this[i].bgColor = bgColor[i]
+        }
+      }
+      // 若颜色不够则仅设置前面的字符
+      else {
+        for (let i = 0; i < bgColor.length; i++) {
+          this[i].bgColor = bgColor[i];
+        }
+      }
+    }
+  }
+
+  /**获取前景色 */
+  get foreColor(): RgbColorChannels[] {
+    return this.map((unit: TextUnit) => {
+      return unit.foreColor
+    });
+  }
+
+  /**设置前景色 */
+  set foreColor(foreColor: (RgbColorChannels | string)[] | RgbColorChannels | string) {
+    // 单色
+    if (isString(foreColor) || isRgbChannels(foreColor)) {
+      this.forEach((unit: TextUnit) => {
+        unit.foreColor = foreColor;
+      })
+    }
+    // 多色
+    else {
+      if (this.length <= foreColor.length) {
+        for (let i = 0; i < this.length; i++) {
+          this[i].foreColor = foreColor[i]
+        }
+      }
+      // 若颜色不够则仅设置前面的字符
+      else {
+        for (let i = 0; i < foreColor.length; i++) {
+          this[i].foreColor = foreColor[i];
+        }
+      }
+    }
+  }
+  
   public add(...units: ColorTextUnit[]) {
     this.push(...units)
   }
@@ -657,6 +850,118 @@ class ColorText extends Array<TextUnit> {
     }
     return this
   }
+
+  bold() {
+    this.forEach((unit:TextUnit)=>{
+      unit.bold();
+    })
+    return this
+  }
+
+  remove_bold() {
+    this.forEach((unit:TextUnit)=>{
+      unit.remove_bold();
+    })
+    return this
+  }
+
+  italic(){
+    this.forEach((unit:TextUnit)=>{
+      unit.italic();
+    })
+    return this
+  }
+
+  remove_italic(){
+    this.forEach((unit:TextUnit)=>{
+      unit.remove_italic();
+    })
+    return this
+  }
+
+  delete(){
+    this.forEach((unit:TextUnit)=>{
+      unit.delete();
+    })
+    return this
+  }
+
+  remove_delete(){
+    this.forEach((unit:TextUnit)=>{
+      unit.delete();
+    })
+    return this
+  }
+
+  underline(){
+    this.forEach((unit:TextUnit)=>{
+      unit.underline();
+    })
+    return this
+  }
+
+  remove_underline(){
+    this.forEach((unit:TextUnit)=>{
+      unit.remove_underline();
+    })
+    return this
+  }
+
+  underline_double(){
+    this.forEach((unit:TextUnit)=>{
+      unit.underline_double();
+    })
+    return this
+  }
+
+  remove_underline_double(){
+    this.forEach((unit:TextUnit)=>{
+      unit.remove_underline_double();
+    })
+    return this
+  }
+
+  glimmer() {
+    this.forEach((unit:TextUnit)=>{
+      unit.glimmer();
+    })
+    return this
+  }
+
+  remove_glimmer(){
+    this.forEach((unit:TextUnit)=>{
+      unit.remove_glimmer();
+    })
+    return this
+  }
+
+  reverse(){
+    this.forEach((unit:TextUnit)=>{
+      unit.reverse();
+    })
+    return this
+  }
+
+  remove_reverse(){
+    this.forEach((unit:TextUnit)=>{
+      unit.remove_reverse();
+    })
+    return this
+  }
+
+  inverse(){
+    this.forEach((unit:TextUnit)=>{
+      unit.inverse();
+    })
+    return this
+  }
+
+  remove_inverse(){
+    this.forEach((unit:TextUnit)=>{
+      unit.remove_inverse();
+    })
+    return this
+  }
 }
 
 /**
@@ -668,44 +973,67 @@ class ColorText extends Array<TextUnit> {
  */
 function geadientText(
   str: string,
-  foreColors: (string | RgbColorChannels)[],
+  foreColors: (string | RgbColorChannels)[] = ["#EB6461", "#84FC2C", "green"],
   bgColors: (string | RgbColorChannels)[] = [],
 ) {
   const len = str.length;
   let ct = new ColorText();
-  // 定义了背景色梯度
-  if (bgColors.length !== 0) {
-    const foreChannels = creatGeadient(foreColors, len);
-    const bgChannels = creatGeadient(bgColors, len);
-    for (let index = 0; index < len - 1; index++) {
-      const char = str[index];
-      const foreColor = foreChannels[index];
-      const bgColor = bgChannels[index];
-      ct.push(
-        new TextUnit(char, foreColor, bgColor)
-      )
-    }
+
+  // 先处理文字
+  for (let index = 0; index < len; index++) {
+    const char = str[index];
+    const u = new TextUnit(char);
+    ct.push(u)
   }
-  // 未定义背景色梯度 
+
+  // 然后设置 前景色
+  // 字符串表示单色
+  if (isString(foreColors)) {
+    ct.foreColor = colorToChannel(foreColors)
+  }
+  // 单色数组也是单色
+  else if (foreColors.length === 1) {
+    ct.foreColor = foreColors[0]
+  }
+  // 无颜色
+  else if (foreColors.length === 0) {
+    noop();
+  }
+  // 梯度颜色
   else {
     const foreChannels = creatGeadient(foreColors, len);
-    // console.log(foreChannels);
-    
-    for (let index = 0; index < len - 1; index++) {
-      const char = str[index];
-      const foreColor = foreChannels[index];
-      // console.log("char, foreColor ===",char, foreColor);
-      const u = new TextUnit(char, foreColor)
-      // u.print()
-      // console.log("\nforeColor =",foreColor);
-      // console.log(`char: ${char}, fcolor:${JSON.stringify(u.foreColor)}, rgb(${foreColor.red},${foreColor.green},${foreColor.blue})`);
-      // console.log(`char: ${char}, fcolor:${JSON.stringify(u.foreColor)}, bColor:${JSON.stringify(u.bgColor)}`);
-      
-      ct.push(u)
+    for (let index = 0; index < len; index++) {
+      ct[index].foreColor = foreChannels[index];
     }
   }
 
+  // 再设置背景色
+  if (isString(bgColors)) {
+    ct.bgColor = colorToChannel(bgColors)
+  }
+  // 单色数组也是单色
+  else if (bgColors.length === 1) {
+    ct.bgColor = bgColors[0]
+  }
+  // 无颜色
+  else if (bgColors.length === 0) {
+    noop();
+  }
+  // 梯度颜色
+  else {
+    const foreChannels = creatGeadient(bgColors, len);
+    for (let index = 0; index < len; index++) {
+      ct[index].bgColor = foreChannels[index];
+    }
+  }
   return ct
 }
 
-export { TextUnit, ColorText, geadientText };
+function cls() {
+  console.clear()
+}
+function clsLine() {
+  console.log(`\x1B[K\x1B[3A`)
+}
+
+export { TextUnit, ColorText, geadientText, cls };

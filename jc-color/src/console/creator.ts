@@ -1,5 +1,5 @@
-import type { RgbColorChannels } from ".";
-import { ColorText, TextUnit } from "./console";
+import { ColorText, TextUnit } from "..";
+import type { RgbColorChannels } from "..";
 
 // TODO: How to get the function name from the inside. 
 const setBgColor = (unit: TextUnit) => {
@@ -331,7 +331,7 @@ export function print(...args: any[]) {
   for (let index in args) {
     _.push(args[index])
   }
-  _.print()
+  return _.print()
 }
 
 export const h1 = () => {

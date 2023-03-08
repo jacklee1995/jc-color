@@ -1,70 +1,6 @@
-import { colorNames, colorsDict } from "./colors";
-import { hexToChannels, rgbToChannels } from "./converter";
-import { regHex, regRgb } from './regs'
-import type { ColorNames, RgbColorChannels } from "./types";
-import { isString, isObject, ValueError, arithmeticProgression } from "./utils";
-
-/**
- * 将一个颜色表达式转为颜色通道
- * @param color 
- * @param strict 若为 true，当 color 不
- * @returns 
- */
-function colorToChannel(color: string | RgbColorChannels, strict: boolean = false): RgbColorChannels {
-  
-  if (isString(color)) {
-    let _color = color.toLowerCase();
-    if (colorNames.includes(_color)) {
-      const _ = colorsDict[_color as ColorNames];
-      return {
-        red: _.red,
-        green: _.green,
-        blue: _.blue,
-      };
-    }
-    else if (regHex.test(_color)) {
-      return hexToChannels(_color)
-    }
-    else if (regRgb.test(_color)) {
-      return rgbToChannels(_color)
-    } else {
-      throw ValueError(`String color param value "${_color}" is not a supported colorvalue`)
-    }
-  }
-  else if (isObject(color)) {
-    return {
-      red: color.red,
-      green: color.green,
-      blue: color.blue
-    }
-  } else if (strict) {
-    throw ValueError(`Invalid color param ${color}`)
-  } else {
-    return {
-      red: 0,
-      green: 0,
-      blue: 0,
-    }
-  }
-}
-
-
-
-/**
- * 将一组以字符串颜色转换为一组颜色管道
- * @param colors 一组颜色值，可以是字符串颜色或者管道颜色
- * @returns 
- */
-function colorsToChannels(...colors: (string | RgbColorChannels)[]): RgbColorChannels[] {
-  let channels: RgbColorChannels[] = [];
-  for (let index = 0; index < colors.length; index++) {
-    channels.push(colorToChannel(colors[index]));
-  }
-  return channels
-}
-
-
-
+import { colorsToChannels} from "../converters";
+import type { RgbColorChannels } from "../types";
+import { ValueError, arithmeticProgression } from "../utils";
 
 /**
  * 一个数组从 fromNum 个数 增加若干个数后有 toNum 个数
@@ -129,16 +65,16 @@ function perStepNumbers(fromNum: number, toNum: number, strict: boolean = false)
  * @param color2 停止颜色（包含）
  * @param insert 要在中间插件的颜色个数
  */
-function creatGeadientBase(color1: RgbColorChannels, color2: RgbColorChannels, insert: number): RgbColorChannels[] {
+function creatGeadientBase(color1: RgbColorChannels, color2: RgbColorChannels, insert: number, includeNum1: boolean=true, includeNum2: boolean=true): RgbColorChannels[] {
   const redFrom = color1.red;
   const greenFrom = color1.green;
   const blueFrom = color1.blue;
   const redEnd = color2.red;
   const greenEnd = color2.green;
   const blueEnd = color2.blue;
-  const geadientRed = arithmeticProgression(redFrom, redEnd, insert);
-  const geadientGreen = arithmeticProgression(greenFrom, greenEnd, insert);
-  const geadientBlue = arithmeticProgression(blueFrom, blueEnd, insert);
+  const geadientRed = arithmeticProgression(redFrom, redEnd, insert, includeNum1, includeNum2);
+  const geadientGreen = arithmeticProgression(greenFrom, greenEnd, insert, includeNum1, includeNum2);
+  const geadientBlue = arithmeticProgression(blueFrom, blueEnd, insert, includeNum1, includeNum2);
   const res: RgbColorChannels[] = [];
   for (let index = 0; index < geadientRed.length; index++) {
     res.push({
@@ -162,6 +98,7 @@ function creatGeadient(colors:(string | RgbColorChannels)[], geadient: number, s
     throw ValueError(`Gradient color requires at least two values.`)
   }
   const channels = colorsToChannels(...colors);
+  
   const fromNum = channels.length; // 原有颜色数
   if(fromNum > geadient){
     if(strict){
@@ -175,7 +112,10 @@ function creatGeadient(colors:(string | RgbColorChannels)[], geadient: number, s
     return channels
   }
   else {
-    let res: RgbColorChannels[] = [];
+    const _0 = channels[0]
+    const res: RgbColorChannels[] = [
+      {red:_0.red, green:_0.green, blue:_0.blue },
+    ];
     // 每个坑位需要插入的颜色个数
     const prePosInserts = perStepNumbers(len, geadient);
     
@@ -184,14 +124,25 @@ function creatGeadient(colors:(string | RgbColorChannels)[], geadient: number, s
       let fromChannel = channels[i];
       let toChannel = channels[i+1];  
       let inserts = prePosInserts[i]; // 该坑位需要插入的颜色数
+
+
+      // console.log("\n----------------------------------------\n*fromChannel =",fromChannel);
+      // console.log("*toChannel =",toChannel);
       
-      // 每组默认包含头不包含尾获取 R、G、B 等差数列
-      const reds = arithmeticProgression(fromChannel.red, toChannel.red, inserts, true, false);
-      const greens = arithmeticProgression(fromChannel.green, toChannel.green, inserts, true, false);
-      const blues = arithmeticProgression(fromChannel.blue, toChannel.blue, inserts, true, false);
       
+      // 每组默认不包含头尾获取 R、G、B 等差数列
+      const reds = arithmeticProgression(fromChannel.red, toChannel.red, inserts, false, true);
+      const greens = arithmeticProgression(fromChannel.green, toChannel.green, inserts, false, true);
+      const blues = arithmeticProgression(fromChannel.blue, toChannel.blue, inserts, false, true);
+
+      // console.log('\nreds =',reds);
+      // console.log('\greens =',greens);
+      // console.log('\blues =',blues);
+      
+
+
       // 组合各组渐变色
-      for(let j=0; j< geadient-1; j++){
+      for(let j=0; j< reds.length; j++){
         res.push({
           red: reds[j],
           green: greens[j],
@@ -199,26 +150,11 @@ function creatGeadient(colors:(string | RgbColorChannels)[], geadient: number, s
         })
       }
     }
-    // 补上最后一位
-    res.push(channels[len-1]);
-
-
-
-
-
-
-
-
-    
-
-    // console.log("res =",res);
-    
     return res
   }
 }
 
-
-
 export {
+  creatGeadientBase,
   creatGeadient
 }

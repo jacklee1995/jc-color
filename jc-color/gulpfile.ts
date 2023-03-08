@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import { copyFile, mkdir, writeFile  } from 'fs/promises'
-import { src, watch, dest, series } from "gulp";
+import { src, watch, dest, series, parallel } from "gulp";
 // import concat from "gulp-concat" // 合并文件插件
 import uglify from "gulp-uglify" // 压缩文件
 import rename from "gulp-rename" // 重命名插件
@@ -44,18 +44,40 @@ function buildTypescript():NodeJS.ReadWriteStream {
 }
 
 function buildJSIndex():NodeJS.ReadWriteStream {
-  return src("dist/temp/*.js") // 找到目标源文件，将数据读取到 gulp 的内存
-    .pipe(dest("./dist/jc-color/")) // 临时输出文件到本地 dist/js 目录
-    .pipe(uglify()) // 压缩文件
-    // .pipe(rename({ basename: "index" })) // 为压缩后的文件重命名中添加 .min 后缀
-    .pipe(dest("./dist/jc-color/")) // 输出重命名后的文件到本地 dist 目录
+  return src("dist/temp/*.js")
+    .pipe(dest("./dist/jc-color/"))
+    .pipe(uglify()) 
+    .pipe(dest("./dist/jc-color/"))
 }
 
-function buildJSUtils():NodeJS.ReadWriteStream {
-  return src("./dist/temp/utils/*.js") // 找到目标源文件，将数据读取到 gulp 的内存
-    .pipe(uglify()) // 压缩文件
-    // .pipe(rename({ basename: "index" })) // 为压缩后的文件重命名中添加 .min 后缀
-    .pipe(dest("./dist/jc-color/utils/")) // 输出重命名后的文件到本地 dist 目录
+function moveJsToDist(){
+  return parallel([
+    ()=>{
+      return src("./dist/temp/console/*.js")
+      .pipe(uglify())
+      .pipe(dest("./dist/jc-color/console/"))
+    },
+    ()=>{
+      return src("./dist/temp/converters/*.js")
+      .pipe(uglify())
+      .pipe(dest("./dist/jc-color/converters/"))
+    },
+    ()=>{
+      return src("./dist/temp/core/*.js")
+      .pipe(uglify())
+      .pipe(dest("./dist/jc-color/core/"))
+    },
+    ()=>{
+      return src("./dist/temp/types/*.js")
+      .pipe(uglify())
+      .pipe(dest("./dist/jc-color/types/"))
+    },
+    ()=>{
+      return src("./dist/temp/utils/*.js")
+      .pipe(uglify())
+      .pipe(dest("./dist/jc-color/utils/"))
+    },
+  ])
 }
 
 // 转移声明文件
@@ -112,11 +134,7 @@ export const  copyFiles = async () => {
     copyFile(
       path.resolve(rootDir, 'LICENSE'),
       path.resolve(productDir, 'LICENSE')
-    ),
-    // copyFile(
-    //   path.resolve(__dirname, 'tsconfig.json'),
-    //   path.resolve(productDir, 'tsconfig.json')
-    // ),
+    )
   ])
 }
 // 注册监视任务
@@ -132,7 +150,7 @@ function watchChanges() {
   ], series(
     buildTypescript, 
     buildJSIndex, 
-    buildJSUtils,
+    moveJsToDist(),
     copyFiles, 
     copyTypesDefinitions
   ));
@@ -144,7 +162,7 @@ const build = series([
   series([
     buildTypescript, // 编译 ts 为 js
     buildJSIndex, // 合并 js
-    buildJSUtils,
+    moveJsToDist(),
   ]),
   copyFiles,
   copyTypesDefinitions,

@@ -19,10 +19,15 @@ import { ValueError } from "./exceptions";
  * arithmeticProgression(1,1,3);   // [ 1, 1, 1, 1, 1 ]
  * ```
  */
-function arithmeticProgression(num1: number, num2: number, insert: number, includeNum1:boolean=true, includeNum2:boolean=true) {
+function arithmeticProgression(_num1: number|string, _num2: number|string, _insert: number|string, includeNum1:boolean=true, includeNum2:boolean=true) {
+  const insert = parseInt(_insert.toString(), 10)
   if(insert<0){
     throw ValueError(`The value of parameter "insert" must be greater than 0, but got "${insert}"`)
   }
+
+  const num1 = parseInt(_num1.toString(), 10)
+  const num2 = parseInt(_num2.toString(), 10)
+
   const stageNum = insert + 1;
   const stage = (num2 - num1) / stageNum;
   const res = [];

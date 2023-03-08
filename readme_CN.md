@@ -1,20 +1,16 @@
 # jc-color
 
-
-
-
-
 <fieldset>
   <legend>关于 jc-color...</legend>
   <p><b>作者</b> : <a href="https://blog.csdn.net/qq_28550263?spm=1010.2135.3001.5343"><cite>李俊才 </cite></a></p>
   <p><b>邮箱</b> : <a href="mailto:291148484@163.com"><cite>291148484@163.com</cite></a></p>
+  <p><b>home</b> : <a href="http://thispage.tech:9680/jclee1995/jc-color">http://thispage.tech:9680/jclee1995/jc-color</a></p>
   <p><b>github</b> : <a href="https://github.com/jacklee1995/jc-color">https://github.com/jacklee1995/jc-color</a></p>
-  <b>简介</b> :  <p> jc-color 是一个 JavaScript/NodeJS 颜色工具，可以用于 <b>颜色类型转换</b>、<b>调色</b>、<b>控制台输出</b>。它不仅可以用于 <b>浏览器</b>，还可以用于  <b>NodeJS</b>。</p>
+
+<b>简介</b> :  <p> jc-color 是一个 JavaScript/NodeJS 颜色工具，可以用于 <b>颜色类型转换</b>、<b>调色</b>、<b>控制台输出</b>。它不仅可以用于 <b>浏览器</b>，还可以用于  <b>NodeJS</b>。</p>
 </fieldset><br>
 
-
 中文 | [English](/readme.md "Click to jump to English document.")
-
 
 <br>
 
@@ -31,117 +27,67 @@ yarn add jc-color
 pnpm install jc-color
 ```
 
-## 2. 色彩相关概念
+## 2. 快速开始
 
-日常中人眼看到物体的不同颜色来源于物体对光的选择性吸收，当一个物体不吸收某个波长的光波时，这段光波将被物体反色，从而进入人的眼中。 生活中的不发光物体靠反射自己不吸收的光让我们感知颜色，对于显示器设备这类发光物体却恰恰相反，他们靠发出特定波长的光让我们感知颜色。光学中的任何颜色都是由三种最基本的颜色叠加形成的，这三种颜色称为所谓光的 **三原色**，由光的三原色相互叠加就可以得到各种颜色，包括白色。这三原色就包括 **红**（Red）、**绿**（Green）、**蓝**（Blue）。
+你可以依据下面的效果和代码，配合附录中的颜色表掌握在终端中的方法。
 
-## 3. 颜色的表示
+![1678271280478](image/readme_CN/1678271280478.gif)
 
-### 3.1 小节概述
+```typescript
+import { createUnit, createText, geadientText, blue, lime, crimson, firebrick, print } from 'jc-color'
 
-本小节介绍常用的颜色表示方法以及本模块中各种表示的用法和相互转换的方法。
+print('--------------------------------------------------')
+geadientText("你好呀！欢迎使用 JC Color！").underline().italic().print()
+print('--------------------------------------------------')
 
-### 3.2 通过 RGB 表示的颜色
+geadientText("这是一款涵盖颜色计算、处理与终端输出的工具",["red", "blue","#EB6461","green","rgb(128, 80, 252)"]).underline_double().print()
+geadientText("它同时兼容 NodeJS 与 Web 环境，在终端打印上的功能尤其丰富，并且没有任何模块依赖。",["#84FC2C","yellow"],["red", "blue","#EB6461","green"]).glimmer().print()
 
+createText(
+ "\n你可以使用",
+  createUnit(" Hex、","#EB6461"),
+  createUnit(" Rgb 来设置颜色、","rgb(62, 122, 234)"),
+  " 具有 256色/真彩色 支持!",
+  createUnit("\n这里包含了一百多个内置颜色名来设置你的颜色、","Yellow"),
+  createUnit(" 可以使用高亮/加粗体、").bold(),
+  createUnit(" 可以 暗体。").dark(),
+  "\n还有 ",
+  blue("斜体字、").orangeBg().italic(),
+  createUnit(" 下划线、","tomato").underline(),
+  createUnit(" 双下划线、","teal").underline_double(),
+  lime("闪烁体（仅Node）、").bg("#cdcdcd").glimmer(),
+).print()
 
+crimson("\n你还可以使用").blueBg().print()
+.reverse("反转色：前景色和背景色互换").print()
 
-### 3.3 通过十六进制数表示的颜色
-
-## 4. 颜色的处理
-
-### 4.1 本节概述
-
-在这一小节介绍了颜色处理的相关方法。包括 、调色
-
-## 5. 在控制台使用彩色文字
-
-### 5.1 ColorUnit 对象
-
-`ColorUnit` 对象是构成控制台彩色文本的组成颗粒，你可以通过给出前景色和背景色RGB值对象创建一个彩色文本单元。
-
-```ts
-import { createUnit } from 'jc-color'
-
-const text = "我是一段蓝底红字的文本";        // 要在控制台打印的文本
-const foreColor = {red:255,green:0,blue:0}; // 文本颜色
-const bgColor = {red:0,green:255,blue:0};   // 背景色
-
-const unit = createUnit(text, foreColor, bgColor)
-unit.print();
-
-```
-
-这段代码 NodeJS 环境的终端中效果看起来是这样子的：
-
-![1677849104561](image/readme_CN/1677849104561.png)
-
-完全一样的代码还可以完美地被应用于浏览器地控制台，效果是这样的：
-
-![1677943703060](image/readme_CN/1677943703060.png)
+blue("\n以及反色：").redBg().print()
+.inverseFore("包括前景色的反色").print().remove_inverseFore()
+.inverseBg("和背景色的反色").print().remove_inverseFore()
+.inverse("背景色和前景色同时反色").print()
 
 
-上面展示的代码中，我们通过指定 红、绿、蓝 三各颜色通道的数值来指定颜色，这显得比较麻烦。相对简单的方式是，采用附录中的预定义颜色（参见[附录. 预定义颜色名对照表](#F)）。例如：
+geadientText("也可以生成颜色，制作渐变色、背景渐变色，并且在渐变色文本中应用各种效果！").print()
 
-```ts
-import { createUnit } from 'jc-color'
-
-const unit = createUnit("Hello JC Color", "gold", "teal");
-unit.print();
+firebrick('\n尽情享用吧！')
 
 ```
 
-这段代码在 NodeJS 和 浏览器 运行环境的终端打印效果也是一样的：
+这套代码不需要修改，可以直接使用于浏览器中：
 
-![1677984776087](image/readme_CN/1677984776087.png)
+![1678277687767](image/readme_CN/1678277687767.png)
 
-一种更加方便的方式是使用颜色名来创建 TextUnit 对象，这种方式下若颜色名不包含 **Bg** 后缀则表示前景色，反之表示背景色。例如：
+当你通过颜色名创建颜色时，发现预置颜色名中的所有颜色均不满足你的要求，可以使用 `fr` 创建颜色：
 
-```ts
-import { lime } from 'jc-color'
+```typescript
+import { fr } from 'jc-color';
 
-const unit = lime('Hello JC Color').crimsonBg();
-unit.print();
-```
-![1677992129991](image/readme_CN/1677992129991.png)
-
-该方式总是从前景色开始，在以前景色命名地函数中传入文本内容后，调用背景色即可完成创建。在 VSCode 编辑器中，你可以很方便地根据编辑器提示选择一个背景色：
-
-![1677992394973](image/readme_CN/1677992394973.png)
-
-采用颜色名的方式让我们能够使用熟悉的单词快速地为终端文本进行着色而不用关心颜色的数量表达，但有时候我们仍然希望使用我们自己指定的颜色值来为文本着色。我们可以使用类似于CSS中 十六进制的颜色 和 RGB颜色 表示方法来表达我们希望使用的颜色字符串作为颜色值参数。例如：
-
-```ts
-import { createUnit } from 'jc-color'
-
-const unit = createUnit("Hello JC Color", "#FFFF00", "rgb(128,0,255)");
-unit.print();
-
+fr('some text.', '#D841B3').print();
+fr('some text.','#D841B3').yellowBg().print();
+fr('some text.', '#D841B3').bg('rgb(213,247,74)').print()
 ```
 
-
-
-在 NodeJS 和 浏览器 运行环境中的效果看起来是这样子的：
-
-![1677985379251](image/readme_CN/1677985379251.png)
-
-在自定义颜色这里，我们也可以通过一种很方便的方式和内部定义颜色混用。例如：
-
-```ts
-import { fr } from 'jc-color'
-
-const unit1 = fr("JC Color", "#FB6D04")._;    // 空背景色，将采用终端默认值
-const unit2 = fr("JC Color", "rgb(217,38,132)").chocolateBg(); // 使用 `rgb()` 模板指定颜色
-const unit3 = fr("JC Color", {red: 113, green: 18, blue:237}).bg("#FFEC00"); // 使用十六进制数指定颜色
-
-unit1.print();
-unit2.print();
-unit3.print();
-```
-![1678010791598](image/readme_CN/1678010791598.png)
-
-### 5.2 ColorText 对象
-
-在实际应用中，我们很多时候希望为同一行文本的不同部分使用不同样式，而 TextUnit 对象实例打印的文本的样式都是一样的。别急，赶紧使用 ColorText 对象。
+![1678272039676](image/readme_CN/1678272039676.png)
 
 ---
 
@@ -149,8 +95,8 @@ unit3.print();
 
 为了方便使用，`jc-color` 已经预先定义好了一些常见的颜色名。这些颜色名与CSS定义的颜色总体一致。各颜色名与对应的值如下：
 
-| 颜色名         | 十六进制颜色值 | 颜色展示                                            |  | 颜色名               | 十六进制颜色值 | 颜色展示                                            |
-| :------------- | :------------- | :-------------------------------------------------- |:-| :------------------- | :------------- | :-------------------------------------------------- |
+| 颜色名         | 十六进制颜色值 | 颜色展示                                                  |  | 颜色名               | 十六进制颜色值 | 颜色展示                                                  |
+| :------------- | :------------- | :-------------------------------------------------------- | :- | :------------------- | :------------- | :-------------------------------------------------------- |
 | black          | #000000        | <table><td bgcolor="#000000">`#000000`</td></table> |  | navy                 | #000080        | <table><td bgcolor="#000080">`#000080`</td></table> |
 | darkblue       | #00008B        | <table><td bgcolor="#00008B">`#00008B`</td></table> |  | mediumblue           | #0000CD        | <table><td bgcolor="#0000CD">`#0000CD`</td></table> |
 | blue           | #0000FF        | <table><td bgcolor="#0000FF">`#0000FF`</td></table> |  | darkgreen            | #006400        | <table><td bgcolor="#006400">`#006400`</td></table> |
