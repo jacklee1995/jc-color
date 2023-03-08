@@ -2,13 +2,17 @@
 
 [中文](readme_CN.md) | English
 
-**Author**: Jack Lee
+<fieldset>
+  <legend>About jc-color...</legend>
+  <p><b>Author</b> : <a href="https://blog.csdn.net/qq_28550263?spm=1010.2135.3001.5343"><cite>李俊才 </cite></a></p>
+  <p><b>Email</b> : <a href="mailto:291148484@163.com"><cite>291148484@163.com</cite></a></p>
+  <p><b>home</b> : <a href="http://thispage.tech:9680/jclee1995/jc-color">http://thispage.tech:9680/jclee1995/jc-color</a></p>
+  <p><b>github</b> : <a href="https://github.com/jacklee1995/jc-color">https://github.com/jacklee1995/jc-color</a></p>
 
-**Author Email**: [291148484@163.com](mailto:291148484@163.com)
+<b>bref</b> :  <p> jc-color  is a color tool, which can be used for **color type conversion**, **color matching** and **console output**. It can be used not only in **browsers**, but also in **NodeJS**.</p>
+</fieldset><br>
 
-**github**: https://github.com/jacklee1995/jc-color
 
-A color tool, which can be used for **color type conversion**, **color matching** and **console output**. It can be used not only in **browsers**, but also in **NodeJS**.
 
 ## 1. Install
 
@@ -37,6 +41,8 @@ You can master the method in the terminal according to the following effects and
 ![1678277252714](image/readme/1678277252714.gif)
 
 ```typescript
+import { createUnit, createText, geadientText, blue, lime, crimson, firebrick, print } from 'jc-color'
+
 print('--------------------------------------------------')
 geadientText("Hello! Welcome to JC Color!").underline().italic().print()
 print('--------------------------------------------------')
