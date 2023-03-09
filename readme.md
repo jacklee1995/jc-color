@@ -7,6 +7,7 @@
   <p><b>Author</b> : <a href="https://blog.csdn.net/qq_28550263?spm=1010.2135.3001.5343"><cite>李俊才 </cite></a></p>
   <p><b>Email</b> : <a href="mailto:291148484@163.com"><cite>291148484@163.com</cite></a></p>
   <p><b>home</b> : <a href="http://thispage.tech:9680/jclee1995/jc-color">http://thispage.tech:9680/jclee1995/jc-color</a></p>
+  <p><b>gitee</b> : <a href="https://gitee.com/jacklee1995/jc-color">https://gitee.com/jacklee1995/jc-color</a></p>
   <p><b>github</b> : <a href="https://github.com/jacklee1995/jc-color">https://github.com/jacklee1995/jc-color</a></p>
 
 <b>bref</b> :  <p> jc-color  is a color tool, which can be used for **color type conversion**, **color matching** and **console output**. It can be used not only in **browsers**, but also in **NodeJS**.</p>
