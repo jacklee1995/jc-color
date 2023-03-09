@@ -14,6 +14,13 @@
 </fieldset><br>
 
 
+> **features/特征**
+> - **True color /256 colors** support;
+> - **Cross-runtime**, which can be run in browsers and NodeJS runtime, and the effect is relatively uniform;
+> - **No dependent module**, no other modules are needed, and it can be used completely independently. It means that you can copy a single module for installation in a network-free environment, regardless of layer-by-layer dependence;
+> -**Comprehensive predefined colors**, including all more than 140 CSS color names. These color names can not only be passed to text objects as values representing colors, but also be directly used as function names to create color units. Please refer to [Appendix](#f) and WS3 document [Named colors](https://drafts.csswg.org/css-color/#named-colors)、[Named colors of definitions](https://www.w3.org/TR/SVG11/types.html#ColorKeywords) to learn more about it.
+> - **Full-featured**, which makes up for the fact that the Challenge module can't use overline in the browser environment, can't use flicker in NodeJS, and doesn't have the output functions of gradient color, reverse color and reverse color. Compared with chalk, which can only output text, jc-color itself is also a color processing module, which has various color calculation and processing functions, including color matching, color generation and so on. When developing, you can not only use it to assist in color calculation, but also preview some effects at the terminal.
+
 
 ## 1. Install
 
@@ -103,8 +110,8 @@ fr('some text.', '#D841B3').bg('rgb(213,247,74)').print()
 
 For the convenience of use, `jc-color` has predefined some common color names. These color names are generally consistent with the colors defined in CSS standards. The color names and corresponding values are as follows:
 
-| color names    | hex color value | Effect preview                                            |  | color names          | hex color value | Effect preview                                            |
-| :------------- | :-------------- | :-------------------------------------------------------- | :- | :------------------- | :-------------- | :-------------------------------------------------------- |
+| color names    | hex color value | Effect preview                                      |  | color names          | hex color value | Effect preview                                      |
+| :------------- | :-------------- | :-------------------------------------------------- |:-| :------------------- | :-------------- | :-------------------------------------------------- |
 | black          | #000000         | <table><td bgcolor="#000000">`#000000`</td></table> |  | navy                 | #000080         | <table><td bgcolor="#000080">`#000080`</td></table> |
 | darkblue       | #00008B         | <table><td bgcolor="#00008B">`#00008B`</td></table> |  | mediumblue           | #0000CD         | <table><td bgcolor="#0000CD">`#0000CD`</td></table> |
 | blue           | #0000FF         | <table><td bgcolor="#0000FF">`#0000FF`</td></table> |  | darkgreen            | #006400         | <table><td bgcolor="#006400">`#006400`</td></table> |
