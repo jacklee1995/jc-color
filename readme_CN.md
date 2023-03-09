@@ -5,6 +5,7 @@
   <p><b>作者</b> : <a href="https://blog.csdn.net/qq_28550263?spm=1010.2135.3001.5343"><cite>李俊才 </cite></a></p>
   <p><b>邮箱</b> : <a href="mailto:291148484@163.com"><cite>291148484@163.com</cite></a></p>
   <p><b>home</b> : <a href="http://thispage.tech:9680/jclee1995/jc-color">http://thispage.tech:9680/jclee1995/jc-color</a></p>
+  <p><b>gitee</b> : <a href="https://gitee.com/jacklee1995/jc-color">https://gitee.com/jacklee1995/jc-color</a></p>
   <p><b>github</b> : <a href="https://github.com/jacklee1995/jc-color">https://github.com/jacklee1995/jc-color</a></p>
 
 <b>简介</b> :  <p> jc-color 是一个 JavaScript/NodeJS 颜色工具，可以用于 <b>颜色类型转换</b>、<b>调色</b>、<b>控制台输出</b>。它不仅可以用于 <b>浏览器</b>，还可以用于  <b>NodeJS</b>。</p>
