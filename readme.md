@@ -14,7 +14,7 @@
 </fieldset><br>
 
 
-> **features/特征**
+> **features**
 > - **True color /256 colors** support;
 > - **Cross-runtime**, which can be run in browsers and NodeJS runtime, and the effect is relatively uniform;
 > - **No dependent module**, no other modules are needed, and it can be used completely independently. It means that you can copy a single module for installation in a network-free environment, regardless of layer-by-layer dependence;
