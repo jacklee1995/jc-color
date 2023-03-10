@@ -109,8 +109,8 @@ const countNodeStyle = (modes:  Record<DisplatMode, boolean>, that:TextUnit) => 
 const templates = (that:TextUnit) => {
   return {
     "Node": {
-      "styless": `\x1B[0m${that.text}`,
       "default": countNodeStyle(that.modes,that),
+      "styless": `\x1B[0m${that.text}`,
     },
     "Browser": `%c${that.text}`
   }

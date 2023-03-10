@@ -5,6 +5,7 @@ import { isHexColor, isRgbChannels, isRgbColor } from "../types";
 import { hexToChannels, rgbToChannels } from "../converters";
 import { colorToChannel } from '../converters'
 import { getPlatform, templates } from "./platform";
+import { str } from "../utils";
 import { themes } from "./themes";
 
 import type { RgbColorChannels, ColorNames, ColorTextUnit, DisplatMode } from "../types";
@@ -585,19 +586,19 @@ class TextUnit {
     };
   }
 
-  get styleDescriptor() {
+  private styleDescriptor(self:TextUnit=this):string {
     let decoration = "text-decoration:";
-    if (this._modes.underline || this._modes.underline_double) {
+    if (self._modes.underline || self._modes.underline_double) {
       decoration += ' underline'
     }
 
-    if (this._modes.overline) {
+    if (self._modes.overline) {
       decoration += ' overline';                          // 浏览器终端未实现
     }
-    if (this._modes.glimmer) {
+    if (self._modes.glimmer) {
       decoration += ' blink';                             // 浏览器未实现
     }
-    if (this._modes.delete) {
+    if (self._modes.delete) {
       decoration += ' line-through'
     }
     if (decoration === "text-decoration:") {
@@ -610,77 +611,74 @@ class TextUnit {
     res += decoration;
 
     // 前景色
-    if (this._foreColor !== this._default) {
+    if (self._foreColor !== self._default) {
       // 不反转
-      if (!this._modes.reverse) {
+      if (!self._modes.reverse) {
         // 使用反色
-        if (this._modes.inverseFore) {
-          res += `color:rgb(${255 - this._foreColor.red},${255 - this._foreColor.green},${255 - this._foreColor.blue});`;
+        if (self._modes.inverseFore) {
+          res += `color:rgb(${255 - self._foreColor.red},${255 - self._foreColor.green},${255 - self._foreColor.blue});`;
         }
         else {
-          res += `color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+          res += `color:rgb(${self._foreColor.red},${self._foreColor.green},${self._foreColor.blue});`;
         }
       }
       // 反转前景色成背景色
       else {
         // 使用反色
-        if (this._modes.inverseFore) {
-          res += `color:rgb(${255 - this._bgColor.red},${255 - this._bgColor.green},${255 - this._bgColor.blue});`;
+        if (self._modes.inverseFore) {
+          res += `color:rgb(${255 - self._bgColor.red},${255 - self._bgColor.green},${255 - self._bgColor.blue});`;
         }
         else {
-          res += `color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+          res += `color:rgb(${self._bgColor.red},${self._bgColor.green},${self._bgColor.blue});`;
         }
       }
 
     }
     // 背景色
-    if (this._bgColor !== this._default) {
+    if (self._bgColor !== self._default) {
       // 不反转
-      if (!this._modes.reverse) {
+      if (!self._modes.reverse) {
         // 使用反色
-        if (this._modes.inverseBg) {
-          res += `background-color:rgb(${255 - this._bgColor.red},${255 - this._bgColor.green},${255 - this._bgColor.blue});`;
+        if (self._modes.inverseBg) {
+          res += `background-color:rgb(${255 - self._bgColor.red},${255 - self._bgColor.green},${255 - self._bgColor.blue});`;
         } else {
-          res += `background-color:rgb(${this._bgColor.red},${this._bgColor.green},${this._bgColor.blue});`;
+          res += `background-color:rgb(${self._bgColor.red},${self._bgColor.green},${self._bgColor.blue});`;
         }
       }
       // 反转背景色成前景色
       else {
         // 使用反色
-        if (this._modes.inverseBg) {
-          res += `background-color:rgb(${255 - this._foreColor.red},${255 - this._foreColor.green},${255 - this._foreColor.blue});`;
+        if (self._modes.inverseBg) {
+          res += `background-color:rgb(${255 - self._foreColor.red},${255 - self._foreColor.green},${255 - self._foreColor.blue});`;
         } else {
-          res += `background-color:rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`;
+          res += `background-color:rgb(${self._foreColor.red},${self._foreColor.green},${self._foreColor.blue});`;
         }
       }
     }
     // 文字加粗
-    if (this._modes.bold) {
+    if (self._modes.bold) {
       res += 'font-weight:bold;'
     }
 
     // 斜体
-    if (this._modes.italic) {
+    if (self._modes.italic) {
       res += 'font-style:italic;';
     }
 
     // 解决浏览器未实现
     // 上划线
-    if (this._modes.overline) {
-      res += `border-top:1px solid rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`
+    if (self._modes.overline) {
+      res += `border-top:1px solid rgb(${self._foreColor.red},${self._foreColor.green},${self._foreColor.blue});`
     }
     // 双下划线
-    if (this._modes.underline_double) {
-      res += `border-bottom:1px solid rgb(${this._foreColor.red},${this._foreColor.green},${this._foreColor.blue});`
+    if (self._modes.underline_double) {
+      res += `border-bottom:1px solid rgb(${self._foreColor.red},${self._foreColor.green},${self._foreColor.blue});`
     }
 
     // 仅用于浏览器的功能
-    if(this._fontSize>0){
-      res += `font-size:${parseInt(this._fontSize.toString(),10)}px`
+    if(self._fontSize>0){
+      res += `font-size:${parseInt(self._fontSize.toString(),10)}px`
     }
-
-
-    // console.log('res = "', res + "\"");
     return res
   }
 
@@ -688,20 +686,21 @@ class TextUnit {
     return this._modes
   }
 
-  get node__str__() {
-    return templates(this).Node.default
-  }
-
-  get broswer__str__() {
-    return templates(this).Browser;
-  }
-
-  public print(str: string = this._text) {
-    this._text = str;
+  private __str__(self:TextUnit =this):string {
     if (getPlatform() === "Node") {
-      console.log(this.node__str__);
+      return templates(self).Node.default
+    }else{
+      return templates(self).Browser;
+    }
+    
+  }
+
+  public print(_str: string = this._text) {
+    this._text = _str;
+    if (getPlatform() === "Node") {
+      console.log(str(this));
     } else {
-      console.log(this.broswer__str__, this.styleDescriptor);
+      console.log(str(this), this.styleDescriptor());
     }
     return this
   }
@@ -826,27 +825,23 @@ class ColorText extends Array<TextUnit> {
 
   private node__str__(): string {
     let res = "";
-    this.forEach((unit) => (res += unit.node__str__));
+    this.forEach((unit) => (res += str(unit)));
     return res;
-  }
-
-  private browser__str__(): string {
-    return this.map((item: TextUnit) => {
-      return item.broswer__str__
-    }).join('');
   }
 
   print() {
     if (getPlatform() === "Node") {
       console.log(this.node__str__());
-    } else {
-      const str = this.map((item: TextUnit) => {
-        return item.broswer__str__
+    } 
+    else {
+      const _str = this.map((item: TextUnit) => {
+        return str(item)
       }).join('');
       const style = this.map((item: TextUnit) => {
-        return item.styleDescriptor
+        const func = Reflect.get(item,'styleDescriptor');
+        return func.apply(item)
       });
-      console.log(str, ...style);
+      console.log(_str, ...style);
     }
     return this
   }
