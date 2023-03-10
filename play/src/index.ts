@@ -1,4 +1,4 @@
-import { createUnit, createText, geadientText, blue, lime, crimson, firebrick, print, red, fr } from 'jc-color'
+import { createUnit, createText, geadientText, blue, lime, crimson, firebrick, print, red, fr, green,str } from 'jc-color'
 
 // 例1：同一个文本单元对象的多次打印
 createUnit("你好 JC Color ！---原文本", "red", "blue", {
@@ -146,3 +146,9 @@ firebrick('\n尽情享用吧！')
 // fr('some text.', '#D841B3').print();
 // fr('some text.','#D841B3').yellowBg().print();
 // fr('some text.', '#D841B3').bg('rgb(213,247,74)').print()
+
+print(`
+some text....
+ ${str(red('red text'))},
+ ${str(green('green text'))}
+`)
