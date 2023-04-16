@@ -71,8 +71,6 @@ class TextUnit {
         };
       }
     } else {
-
-
       this._foreColor = foreColor;
       // console.log("this._foreColor =",this._foreColor);
 
