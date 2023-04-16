@@ -3,9 +3,6 @@
   "module": "index.js",
   "scripts": {
   },
-  "dependencies": {
-    "hookable": "^5.4.2"
-  },
   "typeRoots":[],
   "devDependencies": {
   }

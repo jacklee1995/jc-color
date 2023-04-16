@@ -1,5 +1,6 @@
-import { ColorText, str, TextUnit } from "..";
-import type { RgbColorChannels } from "..";
+import { str } from "@jcstdio/jc-utils"
+import { ColorText, TextUnit } from ".."
+import type { RgbColorChannels } from ".."
 
 // TODO: How to get the function name from the inside. 
 const setBgColor = (unit: TextUnit) => {
@@ -330,26 +331,26 @@ export function createText(...args: any[]) {
 // `
 
 
-export const h1 = () => {
-  return
-}
-export const h2 = () => { }
-export const h3 = () => { }
-export const h4 = () => { }
-export const h5 = () => { }
-export const h6 = () => { }
-export const  line = (num:number, contents:any, ) => {
+// export const h1 = () => {
+//   return
+// }
+// export const h2 = () => { }
+// export const h3 = () => { }
+// export const h4 = () => { }
+// export const h5 = () => { }
+// export const h6 = () => { }
+// export const  line = (num:number, contents:any, ) => {
 
-}
-export const timeLine = () => {
+// }
+// export const timeLine = () => {
 
-}
+// }
 
-export const json = () => { }
+// export const json = () => { }
 
-export const trace = () => {}
-export const debug = () => {}
-export const info = () => {}
-export const warn = () => {}
-export const error = () => {}
-export const fatal = () => {}
+// export const trace = () => {}
+// export const debug = () => {}
+// export const info = () => {}
+// export const warn = () => {}
+// export const error = () => {}
+// export const fatal = () => {}

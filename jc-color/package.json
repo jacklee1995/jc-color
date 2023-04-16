@@ -1,6 +1,6 @@
 {
   "name": "jc-color",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A JavaScript tool for color compute and console print tool both for NodeJS and Browser.",
   "scripts": {
     "dev": "gulp --require @esbuild-kit/cjs-loader"
@@ -37,5 +37,8 @@
   },
   "engines": {
     "node": ">= 16"
+  },
+  "dependencies": {
+    "@jcstdio/jc-utils": "^0.0.8"
   }
 }

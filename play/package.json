@@ -20,8 +20,9 @@
     "vue": "^3.2.45"
   },
   "dependencies": {
+    "@jcstdio/jc-utils": "^0.0.8",
     "consola": "^2.15.3",
-    "ts-node": "^10.9.1",
-    "jc-color": "workspace:*"
+    "jc-color": "workspace:*",
+    "ts-node": "^10.9.1"
   }
 }

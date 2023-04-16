@@ -1,4 +1,9 @@
-import { createUnit, createText, geadientText, blue, lime, crimson, firebrick, print, red, fr, green,str } from 'jc-color'
+import { createUnit, createText, gradientText , blue, lime, crimson, firebrick, print, red, fr, green } from 'jc-color'
+
+import { str } from '@jcstdio/jc-utils'
+
+
+
 
 // 例1：同一个文本单元对象的多次打印
 createUnit("你好 JC Color ！---原文本", "red", "blue", {
@@ -49,13 +54,12 @@ createText(createUnit("\nWelcome to ", "lime"), fr("JC Color","Red").goldenrodBg
 // 例5：创建渐变色文字
 
 
-
-geadientText(
+gradientText (
     "输出一段渐变色文字：123456789",
     ["red", "blue","#EB6461","green","rgb(128, 80, 252)"],
 ).print()
 
-geadientText(
+gradientText (
     "输出一段渐变色背景的渐变色文字：123456789 123456789 123456789",
     ["red", "blue"],
     ["#43F5C0", "rgb(141,171,157)","yellow"],
@@ -63,18 +67,18 @@ geadientText(
 
 
 
-geadientText(
+gradientText (
   "输出一段闪烁的渐变色文字"
 ).glimmer().print()
 
 
 
 print('--------------------------------------------------')
-geadientText("你好呀！欢迎使用 JC Color！").underline().italic().print()
+gradientText ("你好呀！欢迎使用 JC Color！").underline().italic().print()
 print('--------------------------------------------------')
 
-geadientText("这是一款涵盖颜色计算、处理与终端输出的工具",["red", "blue","#EB6461","green","rgb(128, 80, 252)"]).underline_double().print()
-geadientText("它同时兼容 NodeJS 与 Web 环境，在终端打印上的功能尤其丰富，并且没有任何模块依赖。",["#84FC2C","yellow"],["red", "blue","#EB6461","green"]).glimmer().print()
+gradientText ("这是一款涵盖颜色计算、处理与终端输出的工具",["red", "blue","#EB6461","green","rgb(128, 80, 252)"]).underline_double().print()
+gradientText ("它同时兼容 NodeJS 与 Web 环境，在终端打印上的功能尤其丰富，并且没有任何模块依赖。",["#84FC2C","yellow"],["red", "blue","#EB6461","green"]).glimmer().print()
 
 createText(
  "\n你可以使用",
@@ -100,52 +104,11 @@ blue("\n以及反色：").redBg().print()
 .inverse("背景色和前景色同时反色").print()
 
 
-geadientText("也可以生成颜色，制作渐变色、背景渐变色，并且在渐变色文本中应用各种效果！").print()
+gradientText ("也可以生成颜色，制作渐变色、背景渐变色，并且在渐变色文本中应用各种效果！").print()
 
 firebrick('\n尽情享用吧！')
 
 
-// print('--------------------------------------------------')
-// geadientText("Hello! Welcome to JC Color!").underline().italic().print()
-// print('--------------------------------------------------')
-
-// geadientText("This is a tool covering color calculation, processing and terminal output,",["red", "blue","#EB6461","green","rgb(128, 80, 252)"]).underline_double().print()
-// geadientText("which is compatible with NodeJS and Web environment at the same time, and its functions in terminal printing are particularly rich, and there is no module dependence.",["#84FC2C","yellow"],["red", "blue","#EB6461","green"]).glimmer().print()
-
-// createText(
-//  "\nYou can use",
-//   createUnit(" Hex、","#EB6461"),
-//   createUnit(" Rgb to set the colors、","rgb(62, 122, 234)"),
-//   " with 256 colors/true color support!",
-//   createUnit("\nThis module contains more than one hundred built-in color names to set your color,","Yellow"),
-//   createUnit(" You can use highlighting/bolding ").bold(),
-//   createUnit("and also dark letters.").dark(),
-//   "\nand also ",
-//   blue("italics,").orangeBg().italic(),
-//   createUnit("underline,","tomato").underline(),
-//   createUnit(" double underline、","teal").underline_double(),
-//   lime("glimmer fonts （alim only in Node）、").bg("#cdcdcd").glimmer(),
-// ).print()
-
-// crimson("\nYou can also use").blueBg().print()
-// .reverse("reverse colors. That is, the foreground and background colors are exchanged.").print()
-
-// blue("\nAnd inverse colors.").redBg().print()
-// .inverseFore("which includes ieverse color of the foreground color").print().remove_inverseFore()
-// .inverseBg("and also background color.").print().remove_inverseFore()
-// .inverse("Of course, the background color and foreground color are inversed at the same time.").print()
-
-
-// geadientText("You can also generate colors, make gradients, background gradients, and apply various effects in gradient text!").print()
-
-// firebrick('\nEnjoy it!')
-
-
-// import { fr } from 'jc-color';
-
-// fr('some text.', '#D841B3').print();
-// fr('some text.','#D841B3').yellowBg().print();
-// fr('some text.', '#D841B3').bg('rgb(213,247,74)').print()
 
 print(`
 some text....

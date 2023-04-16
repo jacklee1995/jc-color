@@ -1,15 +1,12 @@
+import { isNumber,  isString, noop, str } from "@jcstdio/jc-utils";
 import { colorNames, colorsDict } from "./colors";
-import { isNumber, isNumberStr, isObject, isString, noop } from "../utils";
 import { creatGeadient } from "../core";
 import { isHexColor, isRgbChannels, isRgbColor } from "../types";
 import { hexToChannels, rgbToChannels } from "../converters";
 import { colorToChannel } from '../converters'
 import { getPlatform, templates } from "./platform";
-import { str } from "../utils";
-import { themes } from "./themes";
 
 import type { RgbColorChannels, ColorNames, ColorTextUnit, DisplatMode } from "../types";
-
 
 /**
  * 用于创建颜色单元
@@ -966,7 +963,7 @@ class ColorText extends Array<TextUnit> {
  * @param bgColors 
  * @returns 颜色梯度字符串
  */
-function geadientText(
+function gradientText(
   str: string,
   foreColors: (string | RgbColorChannels)[] = ["#EB6461", "#84FC2C", "green"],
   bgColors: (string | RgbColorChannels)[] = [],
@@ -1024,6 +1021,25 @@ function geadientText(
   return ct
 }
 
+/**
+ * @deprecated The function name should be changed. This function will be deleted at any time, please use `gradientText` instead.
+ */
+function geadientText(str: string,
+  foreColors: (string | RgbColorChannels)[] = ["#EB6461", "#84FC2C", "green"],
+  bgColors: (string | RgbColorChannels)[] = []){
+    return gradientText(str,foreColors,bgColors)
+  }
+
+function print(...args: any[]): void {
+  let _ = "";
+  args.forEach((i)=>{
+    _ += str(i)
+  })
+
+  console.log(_);
+}
+
+/**控制台清屏 */
 function cls() {
   console.clear()
 }
@@ -1031,4 +1047,13 @@ function clsLine() {
   console.log(`\x1B[K\x1B[3A`)
 }
 
-export { TextUnit, ColorText, geadientText, cls };
+export { 
+  TextUnit, 
+  ColorText, 
+  gradientText, 
+  geadientText, 
+  cls, 
+  print, 
+  clsLine,
+  str
+};

@@ -29,7 +29,6 @@ function getPlatform():Platform {
   }
 }
 
-
 const styles = {
   remove_all       : '\x1B[0m',  // √取消下划线
   bold             : '\x1B[1m',  // √高亮

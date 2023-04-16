@@ -1,6 +1,6 @@
 import { colorsToChannels} from "../converters";
 import type { RgbColorChannels } from "../types";
-import { ValueError, arithmeticProgression } from "../utils";
+import { ValueError, arithmeticProgression } from "@jcstdio/jc-utils";
 
 /**
  * 一个数组从 fromNum 个数 增加若干个数后有 toNum 个数
