@@ -115,3 +115,85 @@ some text....
  ${str(red('red text'))},
  ${str(green('green text'))}
 `)
+
+
+
+// import { hex3ToChannels, hex6ToChannels, hexToChannels, hslToRgbChannels } from 'jc-color';
+
+// const hex3 = '#f0c';
+// const hex6 = '#ff00cc';
+// const hsl = 'hsl(300, 100%, 50%)';
+
+// console.log(hex3ToChannels(hex3)); // { red: 255, green: 0, blue: 204 }
+// console.log(hex6ToChannels(hex6)); // { red: 255, green: 0, blue: 204 }
+// console.log(hexToChannels(hex3));  // { red: 255, green: 0, blue: 204 }
+// console.log(hslToRgbChannels(hsl)); // { red: 255, green: 0, blue: 255 }
+
+
+// import { rgbToChannels } from 'jc-color';
+
+// const rgb = 'rgb(255, 0, 204)';
+// console.log(rgbToChannels(rgb));  // { red: 255, green: 0, blue: 204 }
+
+
+// import { hslToChannels } from 'jc-color';
+
+// const hsl = 'hsl(300, 100%, 50%)';
+// console.log(hslToChannels(hsl));  // { red: 255, green: 0, blue: 255 }
+
+
+// import { channelsToHex } from 'jc-color';
+
+// const rgbChannels = { red: 255, green: 0, blue: 204 };
+// const hex = channelsToHex(rgbChannels);
+// console.log(hex);
+
+
+// import { rgbToHex } from 'jc-color';
+
+// const rgb = 'rgb(255, 0, 255)';
+// const hex = rgbToHex(rgb);
+// console.log(hex);      // #ff00ff
+
+
+
+// import { hexToRgb } from 'jc-color';
+
+// const hex1 = '#ff00cc';
+// const rgb1 = hexToRgb(hex1); 
+// console.log(rgb1);        // rgb(255,0,204)
+
+// const hex2 = '#ff00ff';
+// const rgb2 = hexToRgb(hex2); 
+// console.log(rgb2);        // rgb(255,0,255)
+
+
+// import { hslToHex } from 'jc-color';
+// const hsl = 'hsl(300, 100%, 50%)';
+// const hex = hslToHex(hsl);
+// console.log(hex);  // #ff00ff
+
+
+// import { hexToHsl } from 'jc-color';
+// const hex = '#ff00cc';
+// const hsl = hexToHsl(hex);
+// console.log(hsl); // hsl(312, 100%, 50%)
+
+
+// import { channelsToHsl } from 'jc-color';
+// const rgbChannels = { red: 255, green: 0, blue: 204 };
+// const hslChannels = channelsToHsl(rgbChannels);
+// console.log(hslChannels); // hsl(312, 100%, 50%)
+
+
+// import { channelsToRgb } from 'jc-color';
+// const hslChannels = { red: 255, green: 0, blue: 204 };
+// const rgbChannels = channelsToRgb(hslChannels); 
+// console.log(rgbChannels);  // rgb(255,0,204)
+
+
+// import { hslToRgb } from 'jc-color';
+// const hsl = 'hsl(300, 100%, 50%)';
+// const rgb = hslToRgb(hsl);
+// console.log(rgb); // rgb(255,0,255)
+

@@ -15,13 +15,14 @@
 中文 | [English](/readme.md "Click to jump to English document.")
 
 
-> **特征**
-> - **真彩色/256色** 支持；
-> - **跨运行时**，可以在浏览器、NodeJS运行时中运行，且效果比较统一；
-> - **无依赖模块**，不需要任何其它模块，可以完全独立使用。意味着你可以在无网络环境复制单个模块进行安装，而不要考虑层层依赖；
-> - **全面的预定义颜色**，囊括了全部一百四十多个CSS颜色名。这些颜色名不但可以作为表示颜色的值传给文本对象，也可以直接以将他们作为函数名来创建彩色单元；请参考[附录](#f)和WS3文档[《命名颜色》](https://drafts.csswg.org/css-color/#named-colors)、[《定义的命名颜色》](https://www.w3.org/TR/SVG11/types.html#ColorKeywords)
-> - **功能全面**，弥补了 chalk 模块在浏览器环境中无法使用 overline，在NodeJS中无法使用闪烁，不具备渐变色、反转色、反色输出功能。相对于 chalk 只能输出文本，jc-color 本身还是一个颜色处理模块，具备各种颜色的计算和处理函数，包括调色、颜色生成等等。在开发时，你不仅可以使用它在辅助进行颜色计算，还可以在终端边对某些效果预览。
+**特征**
+- **真彩色/256色** 支持；
+- **跨运行时**，可以在浏览器、NodeJS运行时中运行，且效果比较统一；
+- **无依赖模块**，不需要任何其它模块，可以完全独立使用。意味着你可以在无网络环境复制单个模块进行安装，而不要考虑层层依赖；
+- **全面的预定义颜色**，囊括了全部一百四十多个CSS颜色名。这些颜色名不但可以作为表示颜色的值传给文本对象，也可以直接以将他们作为函数名来创建彩色单元；请参考[附录](#f)和WS3文档[《命名颜色》](https://drafts.csswg.org/css-color/#named-colors)、[《定义的命名颜色》](https://www.w3.org/TR/SVG11/types.html#ColorKeywords)
+- **功能全面**，弥补了 chalk 模块在浏览器环境中无法使用 overline，在NodeJS中无法使用闪烁，不具备渐变色、反转色、反色输出功能。相对于 chalk 只能输出文本，jc-color 本身还是一个颜色处理模块，具备各种颜色的计算和处理函数，包括调色、颜色生成等等。在开发时，你不仅可以使用它在辅助进行颜色计算，还可以在终端边对某些效果预览。
 
+> 本模块的基础是颜色处理与转换，可用于需要通过 JavaScript 来处理颜色的应用场景。虽然很多功能已经提供，但目前文档部分仍然在努力完善中。
 
 <br>
 
@@ -42,38 +43,146 @@ pnpm install jc-color
 
 ## 2.1 颜色转换工具
 
-本模块的基础是颜色处理与转换，可用于需要通过 JavaScript 来处理颜色的应用场景。虽然很多功能已经提供，但目前文档部分仍然在努力完善中。
+
 
 这些转换器模块允许您在不同颜色值格式之间进行转换。例如，您可以将 RGB 颜色值转换为 ANSI 颜色值，将十六进制颜色值转换为 RGB 颜色值，将 RGB 颜色值转换为 HSL 颜色值等。
 
 
+### hex3ToChannels, hex6ToChannels, hexToChannels
+
+这些函数用于将 3 位或 6 位十六进制颜色字符串转换为 RGB 通道。
+
 ```ts
-// 导入 jc-color 模块
-import { rgbToAnsi, hexToRgb, rgbToHex, ansiToRgb, rgbToHsl, hslToRgb } from 'jc-color'
+import { hex3ToChannels, hex6ToChannels, hexToChannels, hslToRgbChannels } from 'jc-color';
 
-// 将 RGB 颜色值转换为 ANSI 颜色值
-const ansiColor = rgbToAnsi(255, 0, 0); // 输入 RGB 颜色值 (红色)
-console.log('ANSI color:', ansiColor);
+const hex3 = '#f0c';
+const hex6 = '#ff00cc';
+const hsl = 'hsl(300, 100%, 50%)';
 
-// 将十六进制颜色值转换为 RGB 颜色值
-const rgbColor = hexToRgb('#FF0000'); // 输入十六进制颜色值 (红色)
-console.log('RGB color:', rgbColor);
+console.log(hex3ToChannels(hex3)); // { red: 255, green: 0, blue: 204 }
+console.log(hex6ToChannels(hex6)); // { red: 255, green: 0, blue: 204 }
+console.log(hexToChannels(hex3));  // { red: 255, green: 0, blue: 204 }
+console.log(hslToRgbChannels(hsl)); // { red: 255, green: 0, blue: 255 }
+```
 
-// 将 RGB 颜色值转换为十六进制颜色值
-const hexColor = rgbToHex(255, 0, 0); // 输入 RGB 颜色值 (红色)
-console.log('Hex color:', hexColor);
+### rgbToChannels
 
-// 将 ANSI 颜色值转换为 RGB 颜色值
-const rgbColorFromAnsi = ansiToRgb(196); // 输入 ANSI 颜色值 (红色)
-console.log('RGB color from ANSI:', rgbColorFromAnsi);
+这个函数将 RGB 颜色字符串转换为 RGB 通道。
 
-// 将 RGB 颜色值转换为 HSL 颜色值
-const hslColor = rgbToHsl(255, 0, 0); // 输入 RGB 颜色值 (红色)
-console.log('HSL color:', hslColor);
+```ts
+import { rgbToChannels } from 'jc-color';
 
-// 将 HSL 颜色值转换为 RGB 颜色值
-const rgbColorFromHsl = hslToRgb(0, 100, 50); // 输入 HSL 颜色值 (红色)
-console.log('RGB color from HSL:', rgbColorFromHsl);
+const rgb = 'rgb(255, 0, 204)';
+console.log(rgbToChannels(rgb));  // { red: 255, green: 0, blue: 204 }
+```
+
+### hslToChannels
+
+这个函数将 HSL 颜色字符串转换为 HSL 通道。
+
+```ts
+import { hslToChannels } from 'jc-color';
+
+const hsl = 'hsl(300, 100%, 50%)';
+const hslChannels = hslToChannels(hsl); 
+console.log(hslChannels);       // { red: 255, green: 0, blue: 255 }
+```
+
+### channelsToHex
+
+这个函数将 RGB 通道转换为 6 位十六进制颜色字符串。
+
+```ts
+import { channelsToHex } from 'jc-color';
+
+const rgbChannels = { red: 255, green: 0, blue: 204 };
+const hex = channelsToHex(rgbChannels);
+console.log(hex);      // #ff00cc
+```
+
+### rgbToHex
+
+这个函数将 RGB 颜色字符串转换为 6 位十六进制颜色字符串。
+
+```ts
+import { rgbToHex } from 'jc-color';
+
+const rgb = 'rgb(255, 0, 255)';
+const hex = rgbToHex(rgb);
+console.log(hex);      // #ff00ff
+```
+
+
+### hexToRgb
+
+这个函数将 6 位十六进制颜色字符串转换为 RGB 颜色字符串。
+
+```ts
+import { hexToRgb } from 'jc-color';
+
+const hex1 = '#ff00cc';
+const rgb1 = hexToRgb(hex1); 
+console.log(rgb1);        // rgb(255,0,204)
+
+const hex2 = '#ff00ff';
+const rgb2 = hexToRgb(hex2); 
+console.log(rgb2);        // rgb(255,0,255)
+```
+
+
+###  hslToHex
+
+这个函数将 HSL 颜色字符串转换为 6 位十六进制颜色字符串。
+
+```ts
+import { hslToHex } from 'jc-color';
+const hsl = 'hsl(300, 100%, 50%)';
+const hex = hslToHex(hsl);
+console.log(hex);  // #ff00ff
+```
+
+###  hexToHsl
+
+这个函数将 6 位十六进制颜色字符串转换为 HSL 颜色字符串。
+
+```ts
+import { hexToHsl } from 'jc-color';
+const hex = '#ff00cc';
+const hsl = hexToHsl(hex);
+console.log(hsl); // hsl(312, 100%, 50%)
+```
+
+### channelsToHsl
+
+这个函数将 RGB 通道转换为 HSL 通道。
+
+```ts
+import { channelsToHsl } from 'jc-color';
+const rgbChannels = { red: 255, green: 0, blue: 204 };
+const hslChannels = channelsToHsl(rgbChannels);
+console.log(hslChannels); // hsl(312, 100%, 50%)
+```
+
+### channelsToRgb
+
+这个函数将 HSL 通道转换为 RGB 通道。
+
+```ts
+import { channelsToRgb } from 'jc-color';
+const hslChannels = { red: 255, green: 0, blue: 204 };
+const rgbChannels = channelsToRgb(hslChannels); 
+console.log(rgbChannels);  // rgb(255,0,204)
+```
+
+### hslToRgb
+
+这个函数将 HSL 颜色字符串转换为 RGB 颜色字符串。
+
+```ts
+import { hslToRgb } from 'jc-color';
+const hsl = 'hsl(300, 100%, 50%)';
+const rgb = hslToRgb(hsl);
+console.log(rgb); // rgb(255,0,255)
 ```
 
 

@@ -1,7 +1,7 @@
 import { ValueError } from "@jcstdio/jc-utils";
 import { regHex3 } from "../regs";
 import { RgbColorChannels, isHSLColor, isRgbColor } from "../types";
-import { rgbToChannels } from "./toChannels";
+import { hslToRgbChannels, rgbToChannels } from "./toChannels";
 
 /**
  * 将通道数据转三位十六进制数颜色
@@ -55,33 +55,9 @@ function hslToHex(val: string): string {
     if (!isHSLColor(val)) {
         throw ValueError(`"${val}" is nat a valid hsl color string.`)
     }
-    const [h, s, l] = val.trim().replace(/[^\d,.]/g, "").split(",").map((val) => parseFloat(val));
-    const c = (1 - Math.abs(2 * l - 1)) * s;
-    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-    const m = l - c / 2;
-    let [r, g, b] = [0, 0, 0];
-    if (h >= 0 && h < 60) {
-        [r, g, b] = [c, x, 0];
-    } else if (h >= 60 && h < 120) {
-        [r, g, b] = [x, c, 0];
-    } else if (h >= 120 && h < 180) {
-        [r, g, b] = [0, c, x];
-    } else if (h >= 180 && h < 240) {
-        [r, g, b] = [0, x, c];
-    } else if (h >= 240 && h < 300) {
-        [r, g, b] = [x, 0, c];
-    } else if (h >= 300 && h < 360) {
-        [r, g, b] = [c, 0, x];
-    }
-    r = Math.round((r + m) * 255);
-    g = Math.round((g + m) * 255);
-    b = Math.round((b + m) * 255);
-
-    const _countHex = (c: number) => {
-        const hex = c.toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-    };
-    return `#${_countHex(r)}${_countHex(g)}${_countHex(b)}`;
+    const { red, green, blue } = hslToRgbChannels(val);
+    const hex = (red << 16) | (green << 8) | blue;
+    return `#${hex.toString(16).padStart(6, '0')}`;
 }
 
 
