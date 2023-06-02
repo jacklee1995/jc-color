@@ -236,7 +236,7 @@ firebrick('\n尽情享用吧！')
 
 这套代码不需要修改，可以直接使用于浏览器中：
 
-![1678277687767](image/readme_CN/1678277687767.png)
+![1678277687767](https://github.com/jacklee1995/jc-color/blob/master/image/readme_CN/1678277687767.png?raw=true)
 
 当你通过颜色名创建颜色时，发现预置颜色名中的所有颜色均不满足你的要求，可以使用 `fr` 创建颜色：
 
@@ -248,7 +248,7 @@ fr('some text.','#D841B3').yellowBg().print();
 fr('some text.', '#D841B3').bg('rgb(213,247,74)').print()
 ```
 
-![1678272039676](image/readme_CN/1678272039676.png)
+![1678272039676](https://github.com/jacklee1995/jc-color/blob/master/image/readme_CN/1678272039676.png?raw=true)
 
 ---
 

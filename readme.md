@@ -23,6 +23,8 @@
 > - **Full-featured**, which makes up for the fact that the Challenge module can't use overline in the browser environment, can't use flicker in NodeJS, and doesn't have the output functions of gradient color, reverse color and reverse color. Compared with chalk, which can only output text, jc-color itself is also a color processing module, which has various color calculation and processing functions, including color matching, color generation and so on. When developing, you can not only use it to assist in color calculation, but also preview some effects at the terminal.
 
 
+[https://github.com/jacklee1995/jc-color/blob/master/image/readme/1678277252714.gif?raw=true](https://github.com/jacklee1995/jc-color/blob/master/image/readme/1678277252714.gif?raw=true)
+
 > This module is based on color processing and conversion, and can be used in application scenarios that need to process colors through JavaScript. Although many functions have been provided, the document part is still being improved.
 
 
@@ -243,7 +245,7 @@ firebrick('\nEnjoy it!')
 
 This set of code does not need to be modified and can be directly used in the browser:
 
-![1678275599669](image/readme_CN/1678275599669.png)
+![1678275599669](https://github.com/jacklee1995/jc-color/blob/master/image/readme_CN/1678275599669.png?raw=true)
 
 When you create a color through a color name, you find that all the colors in the preset color name do not meet your requirements. You can use the ` fr` function to create a color:
 
@@ -255,7 +257,7 @@ fr('some text.','#D841B3').yellowBg().print();
 fr('some text.', '#D841B3').bg('rgb(213,247,74)').print()
 ```
 
-![1678272039676](image/readme_CN/1678272039676.png)
+![1678272039676](https://github.com/jacklee1995/jc-color/blob/master/image/readme_CN/1678272039676.png?raw=true)
 
 ---
 
