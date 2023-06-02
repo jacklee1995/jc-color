@@ -41,16 +41,16 @@ pnpm install jc-color
 
 ## 2. 快速开始
 
-## 2.1 颜色转换工具
+### 2.1 颜色转换工具
 
 
 
 这些转换器模块允许您在不同颜色值格式之间进行转换。例如，您可以将 RGB 颜色值转换为 ANSI 颜色值，将十六进制颜色值转换为 RGB 颜色值，将 RGB 颜色值转换为 HSL 颜色值等。
 
 
-### hex3ToChannels, hex6ToChannels, hexToChannels
+#### hex3ToChannels, hex6ToChannels, hexToChannels
 
-这些函数用于将 3 位或 6 位十六进制颜色字符串转换为 RGB 通道。
+这些函数用于将 3 位或 6 位十六进制颜色字符串、hsl颜色字符串转换为 RGB 通道。
 
 ```ts
 import { hex3ToChannels, hex6ToChannels, hexToChannels, hslToRgbChannels } from 'jc-color';
@@ -65,7 +65,7 @@ console.log(hexToChannels(hex3));  // { red: 255, green: 0, blue: 204 }
 console.log(hslToRgbChannels(hsl)); // { red: 255, green: 0, blue: 255 }
 ```
 
-### rgbToChannels
+#### rgbToChannels
 
 这个函数将 RGB 颜色字符串转换为 RGB 通道。
 
@@ -76,7 +76,7 @@ const rgb = 'rgb(255, 0, 204)';
 console.log(rgbToChannels(rgb));  // { red: 255, green: 0, blue: 204 }
 ```
 
-### hslToChannels
+#### hslToChannels
 
 这个函数将 HSL 颜色字符串转换为 HSL 通道。
 
@@ -88,7 +88,7 @@ const hslChannels = hslToChannels(hsl);
 console.log(hslChannels);       // { red: 255, green: 0, blue: 255 }
 ```
 
-### channelsToHex
+#### channelsToHex
 
 这个函数将 RGB 通道转换为 6 位十六进制颜色字符串。
 
@@ -100,7 +100,7 @@ const hex = channelsToHex(rgbChannels);
 console.log(hex);      // #ff00cc
 ```
 
-### rgbToHex
+#### rgbToHex
 
 这个函数将 RGB 颜色字符串转换为 6 位十六进制颜色字符串。
 
@@ -113,7 +113,7 @@ console.log(hex);      // #ff00ff
 ```
 
 
-### hexToRgb
+#### hexToRgb
 
 这个函数将 6 位十六进制颜色字符串转换为 RGB 颜色字符串。
 
@@ -130,7 +130,7 @@ console.log(rgb2);        // rgb(255,0,255)
 ```
 
 
-###  hslToHex
+####  hslToHex
 
 这个函数将 HSL 颜色字符串转换为 6 位十六进制颜色字符串。
 
@@ -141,7 +141,7 @@ const hex = hslToHex(hsl);
 console.log(hex);  // #ff00ff
 ```
 
-###  hexToHsl
+####  hexToHsl
 
 这个函数将 6 位十六进制颜色字符串转换为 HSL 颜色字符串。
 
@@ -152,7 +152,7 @@ const hsl = hexToHsl(hex);
 console.log(hsl); // hsl(312, 100%, 50%)
 ```
 
-### channelsToHsl
+#### channelsToHsl
 
 这个函数将 RGB 通道转换为 HSL 通道。
 
@@ -163,7 +163,7 @@ const hslChannels = channelsToHsl(rgbChannels);
 console.log(hslChannels); // hsl(312, 100%, 50%)
 ```
 
-### channelsToRgb
+#### channelsToRgb
 
 这个函数将 HSL 通道转换为 RGB 通道。
 
@@ -174,7 +174,7 @@ const rgbChannels = channelsToRgb(hslChannels);
 console.log(rgbChannels);  // rgb(255,0,204)
 ```
 
-### hslToRgb
+#### hslToRgb
 
 这个函数将 HSL 颜色字符串转换为 RGB 颜色字符串。
 
@@ -186,10 +186,8 @@ console.log(rgb); // rgb(255,0,255)
 ```
 
 
-在上面的示例中，我们首先导入了 jc-color 模块和各种颜色转换器模块。然后，我们使用这些转换器将颜色值从一种格式转换为另一种格式，并在控制台中输出转换后的颜色值。
 
-
-## 2.2 彩色终端工具
+### 2.2 彩色终端工具
 
 
 你可以依据下面的效果和代码，配合附录中的颜色表掌握在终端中的方法。

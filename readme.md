@@ -23,6 +23,10 @@
 > - **Full-featured**, which makes up for the fact that the Challenge module can't use overline in the browser environment, can't use flicker in NodeJS, and doesn't have the output functions of gradient color, reverse color and reverse color. Compared with chalk, which can only output text, jc-color itself is also a color processing module, which has various color calculation and processing functions, including color matching, color generation and so on. When developing, you can not only use it to assist in color calculation, but also preview some effects at the terminal.
 
 
+> This module is based on color processing and conversion, and can be used in application scenarios that need to process colors through JavaScript. Although many functions have been provided, the document part is still being improved.
+
+
+
 ## 1. Install
 
 ### use npm to install
@@ -44,6 +48,154 @@ pnpm install jc-color
 ```
 
 ## 2. Get Started
+
+
+### 2.1 Color conversion tool
+
+
+
+These converter modules allow you to convert between different color value formats. For example, you can convert RGB color values into ANSI color values, hexadecimal color values into RGB color values, RGB color values into HSL color values, and so on.
+
+
+#### hex3ToChannels, hex6ToChannels, hexToChannels
+
+These functions are used to convert 3-bit or 6-bit hexadecimal color strings and hsl color strings into RGB channels.
+
+```ts
+import { hex3ToChannels, hex6ToChannels, hexToChannels, hslToRgbChannels } from 'jc-color';
+
+const hex3 = '#f0c';
+const hex6 = '#ff00cc';
+const hsl = 'hsl(300, 100%, 50%)';
+
+console.log(hex3ToChannels(hex3)); // { red: 255, green: 0, blue: 204 }
+console.log(hex6ToChannels(hex6)); // { red: 255, green: 0, blue: 204 }
+console.log(hexToChannels(hex3));  // { red: 255, green: 0, blue: 204 }
+console.log(hslToRgbChannels(hsl)); // { red: 255, green: 0, blue: 255 }
+```
+
+#### rgbToChannels
+
+This function converts RGB color strings into RGB channels.
+
+```ts
+import { rgbToChannels } from 'jc-color';
+
+const rgb = 'rgb(255, 0, 204)';
+console.log(rgbToChannels(rgb));  // { red: 255, green: 0, blue: 204 }
+```
+
+#### hslToChannels
+
+This function converts HSL color strings into HSL channels.
+
+```ts
+import { hslToChannels } from 'jc-color';
+
+const hsl = 'hsl(300, 100%, 50%)';
+const hslChannels = hslToChannels(hsl); 
+console.log(hslChannels);       // { red: 255, green: 0, blue: 255 }
+```
+
+#### channelsToHex
+
+This function converts RGB channels into 6-bit hexadecimal color strings.
+
+```ts
+import { channelsToHex } from 'jc-color';
+
+const rgbChannels = { red: 255, green: 0, blue: 204 };
+const hex = channelsToHex(rgbChannels);
+console.log(hex);      // #ff00cc
+```
+
+#### rgbToHex
+
+This function converts RGB color strings into 6-bit hexadecimal color strings.
+
+```ts
+import { rgbToHex } from 'jc-color';
+
+const rgb = 'rgb(255, 0, 255)';
+const hex = rgbToHex(rgb);
+console.log(hex);      // #ff00ff
+```
+
+
+#### hexToRgb
+
+This function converts a 6-bit hexadecimal color string into an RGB color string.
+
+```ts
+import { hexToRgb } from 'jc-color';
+
+const hex1 = '#ff00cc';
+const rgb1 = hexToRgb(hex1); 
+console.log(rgb1);        // rgb(255,0,204)
+
+const hex2 = '#ff00ff';
+const rgb2 = hexToRgb(hex2); 
+console.log(rgb2);        // rgb(255,0,255)
+```
+
+
+####  hslToHex
+
+This function converts the HSL color string into a 6-bit hexadecimal color string.
+
+```ts
+import { hslToHex } from 'jc-color';
+const hsl = 'hsl(300, 100%, 50%)';
+const hex = hslToHex(hsl);
+console.log(hex);  // #ff00ff
+```
+
+####  hexToHsl
+
+This function converts a 6-bit hexadecimal color string into an HSL color string.
+
+```ts
+import { hexToHsl } from 'jc-color';
+const hex = '#ff00cc';
+const hsl = hexToHsl(hex);
+console.log(hsl); // hsl(312, 100%, 50%)
+```
+
+#### channelsToHsl
+
+This function converts RGB channels into HSL channels.
+
+```ts
+import { channelsToHsl } from 'jc-color';
+const rgbChannels = { red: 255, green: 0, blue: 204 };
+const hslChannels = channelsToHsl(rgbChannels);
+console.log(hslChannels); // hsl(312, 100%, 50%)
+```
+
+#### channelsToRgb
+
+This function converts HSL channels into RGB channels.
+
+```ts
+import { channelsToRgb } from 'jc-color';
+const hslChannels = { red: 255, green: 0, blue: 204 };
+const rgbChannels = channelsToRgb(hslChannels); 
+console.log(rgbChannels);  // rgb(255,0,204)
+```
+
+#### hslToRgb
+
+This function converts HSL color strings into RGB color strings.
+
+```ts
+import { hslToRgb } from 'jc-color';
+const hsl = 'hsl(300, 100%, 50%)';
+const rgb = hslToRgb(hsl);
+console.log(rgb); // rgb(255,0,255)
+```
+
+
+### 2.2 Color Terminal Tool
 
 You can master the method in the terminal according to the following effects and codes and with the color table in the appendix.
 
