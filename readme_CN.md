@@ -40,6 +40,49 @@ pnpm install jc-color
 
 ## 2. 快速开始
 
+## 2.1 颜色转换工具
+
+本模块的基础是颜色处理与转换，可用于需要通过 JavaScript 来处理颜色的应用场景。虽然很多功能已经提供，但目前文档部分仍然在努力完善中。
+
+这些转换器模块允许您在不同颜色值格式之间进行转换。例如，您可以将 RGB 颜色值转换为 ANSI 颜色值，将十六进制颜色值转换为 RGB 颜色值，将 RGB 颜色值转换为 HSL 颜色值等。
+
+
+```ts
+// 导入 jc-color 模块
+import { rgbToAnsi, hexToRgb, rgbToHex, ansiToRgb, rgbToHsl, hslToRgb } from 'jc-color'
+
+// 将 RGB 颜色值转换为 ANSI 颜色值
+const ansiColor = rgbToAnsi(255, 0, 0); // 输入 RGB 颜色值 (红色)
+console.log('ANSI color:', ansiColor);
+
+// 将十六进制颜色值转换为 RGB 颜色值
+const rgbColor = hexToRgb('#FF0000'); // 输入十六进制颜色值 (红色)
+console.log('RGB color:', rgbColor);
+
+// 将 RGB 颜色值转换为十六进制颜色值
+const hexColor = rgbToHex(255, 0, 0); // 输入 RGB 颜色值 (红色)
+console.log('Hex color:', hexColor);
+
+// 将 ANSI 颜色值转换为 RGB 颜色值
+const rgbColorFromAnsi = ansiToRgb(196); // 输入 ANSI 颜色值 (红色)
+console.log('RGB color from ANSI:', rgbColorFromAnsi);
+
+// 将 RGB 颜色值转换为 HSL 颜色值
+const hslColor = rgbToHsl(255, 0, 0); // 输入 RGB 颜色值 (红色)
+console.log('HSL color:', hslColor);
+
+// 将 HSL 颜色值转换为 RGB 颜色值
+const rgbColorFromHsl = hslToRgb(0, 100, 50); // 输入 HSL 颜色值 (红色)
+console.log('RGB color from HSL:', rgbColorFromHsl);
+```
+
+
+在上面的示例中，我们首先导入了 jc-color 模块和各种颜色转换器模块。然后，我们使用这些转换器将颜色值从一种格式转换为另一种格式，并在控制台中输出转换后的颜色值。
+
+
+## 2.2 彩色终端工具
+
+
 你可以依据下面的效果和代码，配合附录中的颜色表掌握在终端中的方法。
 
 ![1678271280478](image/readme_CN/1678271280478.gif)
